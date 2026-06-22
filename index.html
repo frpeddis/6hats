@@ -98,6 +98,157 @@
   }
   .masthead-brand .brand-icons svg { width: 18px; height: 13px; }
 
+  .settings-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: none;
+  }
+  .settings-trigger svg { width: 17px; height: 17px; }
+  .settings-trigger:hover {
+    color: var(--ink);
+    border-color: var(--rule-2);
+    background: var(--surface-2);
+    transform: rotate(28deg);
+  }
+  .settings-trigger.has-status {
+    position: relative;
+  }
+  .settings-trigger .trigger-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #d4a437;
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+  .settings-trigger .trigger-dot.ok {
+    background: var(--green-hat);
+  }
+  .settings-trigger .trigger-dot.err {
+    background: var(--red-hat);
+  }
+
+  /* ===== SETTINGS MODAL ===== */
+  .settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 19, 15, 0.42);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 20px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  .settings-overlay.open { display: flex; }
+  .settings-modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 760px;
+    margin-bottom: 48px;
+    overflow: hidden;
+  }
+  .settings-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+  }
+  .settings-modal-title {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .settings-modal-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink-2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .settings-modal-close svg { width: 15px; height: 15px; }
+  .settings-modal-close:hover { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .settings-modal-body {
+    padding: 24px;
+    max-height: 76vh;
+    overflow-y: auto;
+  }
+  .settings-section {
+    margin-bottom: 28px;
+  }
+  .settings-section:last-child { margin-bottom: 0; }
+  .settings-section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Language picker */
+  .lang-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .lang-option {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .lang-option:hover { border-color: var(--rule-2); background: var(--surface-2); }
+  .lang-option input[type="radio"] {
+    accent-color: var(--ink);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+  .lang-option .lang-flag { font-size: 18px; line-height: 1; }
+  .lang-option .lang-name { font-family: var(--sans); font-size: 14px; font-weight: 500; color: var(--ink); }
+  .lang-option.active {
+    border-color: var(--ink);
+    background: var(--surface-2);
+    box-shadow: 0 0 0 1px var(--ink);
+  }
+
   /* ===== HERO ===== */
   .hero {
     padding: 28px 0 56px;
@@ -1328,6 +1479,13 @@
     </div>
     <div>A thinking instrument · after de bono · 1985</div>
     <div>est. 2026</div>
+    <button class="settings-trigger has-status" id="settings-trigger" title="Settings — API, model, voice, language" aria-label="Open settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      <span class="trigger-dot" id="trigger-dot"></span>
+    </button>
   </header>
 
   <section class="hero">
@@ -1340,17 +1498,47 @@
     </div>
   </section>
 
-  <!-- ============== SETUP ============== -->
+  <!-- ============== STATUS STRIP (always visible) ============== -->
   <div class="setup">
     <div class="setup-head">
       <div class="setup-status">
         <span class="status-dot" id="status-dot"></span>
         <span id="status-text">Ready — Claude direct mode (no key needed)</span>
       </div>
-      <button class="setup-toggle" id="setup-toggle">Hide</button>
+      <button class="setup-toggle" id="setup-toggle">Settings</button>
     </div>
-    <div class="setup-body" id="setup-body">
-      <div class="provider-tabs">
+  </div>
+
+  <!-- ============== SETTINGS MODAL ============== -->
+  <div class="settings-overlay" id="settings-overlay">
+    <div class="settings-modal">
+      <div class="settings-modal-head">
+        <span class="settings-modal-title">⚙ Settings</span>
+        <button class="settings-modal-close" id="settings-modal-close" aria-label="Close settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="settings-modal-body" id="setup-body">
+
+        <div class="settings-section">
+          <div class="settings-section-title">Output language</div>
+          <div class="lang-options" id="lang-options" role="radiogroup" aria-label="Output language">
+            <label class="lang-option active" data-lang="en">
+              <input type="radio" name="output-lang" value="en" checked />
+              <span class="lang-flag">🇬🇧</span>
+              <span class="lang-name">English <span style="color: var(--ink-3); font-weight: 400;">(default)</span></span>
+            </label>
+            <label class="lang-option" data-lang="it">
+              <input type="radio" name="output-lang" value="it" />
+              <span class="lang-flag">🇮🇹</span>
+              <span class="lang-name">Italiano</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">AI provider &amp; model</div>
+          <div class="provider-tabs">
         <button class="provider-tab active" data-provider="claude-direct">
           <span>💜 Claude (no key)</span>
           <span class="recommended">EASIEST</span>
@@ -1470,7 +1658,10 @@
           No key, no setup. Generate a single, perfectly-crafted prompt, paste it into any LLM — Claude, ChatGPT, Gemini, Mistral — and paste the response back to hear the six voices.
         </p>
       </div>
+        </div>
 
+        <div class="settings-section">
+          <div class="settings-section-title">Voices</div>
       <!-- VOICE SETTINGS — separate, independent of provider -->
       <div class="voice-settings">
         <div class="voice-settings-head">
@@ -1523,6 +1714,9 @@
             </div>
           </div>
         </div>
+      </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1870,9 +2064,10 @@ OUTPUT FORMAT (markdown):
 
 function buildSystemPrompt(hatKey, depthKey) {
   const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
-  return HAT_PROMPT_TEMPLATES[hatKey]
+  const base = HAT_PROMPT_TEMPLATES[hatKey]
     .replace('${TARGET_WORDS}', depth.targetWords)
     .replace('${DEPTH_DIRECTIVE}', depth.directive);
+  return base + (OUTPUT_LANG_DIRECTIVES[outputLang] || '');
 }
 
 const EXAMPLES = {
@@ -1888,6 +2083,7 @@ const KEY_STORAGE_GEMINI = 'sixhats_gemini_key';
 const KEY_STORAGE_ANTHROPIC = 'sixhats_anthropic_key';
 const KEY_STORAGE_ELEVENLABS = 'sixhats_elevenlabs_key';
 const ANTHROPIC_MODEL_STORAGE = 'sixhats_anthropic_model';
+const OUTPUT_LANG_STORAGE = 'sixhats_output_lang';
 const VOICE_ENGINE_STORAGE = 'sixhats_voice_engine';
 const MANUAL_VOICE_MAP_STORAGE = 'sixhats_manual_voice_map';
 let currentProvider = 'claude-direct';  // 'claude-direct' | 'gemini' | 'anthropic' | 'manual'
@@ -1895,6 +2091,15 @@ let currentDepth = 'deep';              // 'concise' | 'standard' | 'deep' | 'ex
 const keys = { gemini: '', anthropic: '', elevenlabs: '' };
 const verified = { gemini: false, anthropic: false, elevenlabs: false };
 let voiceEngine = 'browser';   // 'browser' | 'elevenlabs'
+let outputLang = 'en';         // 'en' | 'it' — language the six hats write their answers in
+
+/* Per-language directive injected into every system prompt and the manual
+   master prompt. English is a no-op (omitted) so existing prompts are
+   unchanged by default. */
+const OUTPUT_LANG_DIRECTIVES = {
+  en: '',
+  it: '\n\nLINGUA DI OUTPUT: Scrivi TUTTA la tua risposta in italiano, mantenendo lo stesso stile, registro e disciplina descritti sopra. Non tradurre letteralmente: scrivi direttamente in un italiano naturale e scorrevole, come farebbe un madrelingua. Mantieni invariati i nomi propri dei personaggi (es. "The Archivist", "The Pulse") e le intestazioni di formattazione richieste altrove in queste istruzioni, che restano in inglese così come specificato.'
+};
 
 /* Anthropic model tiers, indexed 0-2 by the slider. Prices are USD per
    million tokens, current as of the Anthropic pricing page. */
@@ -1926,6 +2131,7 @@ const ANTHROPIC_MODELS = [
 ];
 let anthropicModelIndex = 1; // default: Sonnet 4.6
 
+
 const attachedFiles = [];
 const hatResults = {};
 let isRecording = false;
@@ -1940,6 +2146,10 @@ const statusDot = document.getElementById('status-dot');
 const statusText = document.getElementById('status-text');
 const setupToggle = document.getElementById('setup-toggle');
 const setupBody = document.getElementById('setup-body');
+const settingsTrigger = document.getElementById('settings-trigger');
+const settingsOverlay = document.getElementById('settings-overlay');
+const settingsModalClose = document.getElementById('settings-modal-close');
+const triggerDot = document.getElementById('trigger-dot');
 const hatsGrid = document.getElementById('hats-grid');
 const stageMeta = document.getElementById('stage-meta');
 const playAllBtn = document.getElementById('play-all-btn');
@@ -1965,6 +2175,7 @@ const responseStep = document.getElementById('response-step');
 function setStatus(state, msg) {
   statusDot.className = 'status-dot' + (state ? ' ' + state : '');
   statusText.textContent = msg;
+  if (triggerDot) triggerDot.className = 'trigger-dot' + (state ? ' ' + state : '');
 }
 
 function updateStatusForProvider() {
@@ -1990,9 +2201,22 @@ function updateStatusForProvider() {
   }
 }
 
-setupToggle.addEventListener('click', () => {
-  setupBody.classList.toggle('collapsed');
-  setupToggle.textContent = setupBody.classList.contains('collapsed') ? 'Show' : 'Hide';
+function openSettings() {
+  settingsOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSettings() {
+  settingsOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+setupToggle.addEventListener('click', openSettings);
+settingsTrigger.addEventListener('click', openSettings);
+settingsModalClose.addEventListener('click', closeSettings);
+settingsOverlay.addEventListener('click', (e) => {
+  if (e.target === settingsOverlay) closeSettings();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && settingsOverlay.classList.contains('open')) closeSettings();
 });
 
 /* =====================================================================
@@ -2004,6 +2228,8 @@ function loadKeys() {
     keys.anthropic = localStorage.getItem(KEY_STORAGE_ANTHROPIC) || '';
     keys.elevenlabs = localStorage.getItem(KEY_STORAGE_ELEVENLABS) || '';
     voiceEngine = localStorage.getItem(VOICE_ENGINE_STORAGE) || 'browser';
+    const storedLang = localStorage.getItem(OUTPUT_LANG_STORAGE);
+    if (storedLang === 'en' || storedLang === 'it') outputLang = storedLang;
     const storedModel = localStorage.getItem(ANTHROPIC_MODEL_STORAGE);
     if (storedModel !== null && !isNaN(parseInt(storedModel, 10))) {
       const idx = parseInt(storedModel, 10);
@@ -2029,6 +2255,11 @@ function loadKeys() {
   const modelSlider = document.getElementById('anthropic-model-slider');
   if (modelSlider) modelSlider.value = String(anthropicModelIndex);
   updateModelPickerUI();
+  const langRadio = document.querySelector('input[name="output-lang"][value="' + outputLang + '"]');
+  if (langRadio) langRadio.checked = true;
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.lang === outputLang);
+  });
   const elKeyInput = document.getElementById('elevenlabs-key');
   if (elKeyInput && keys.elevenlabs) elKeyInput.value = keys.elevenlabs;
   // Sync voice-engine radio + show/hide key block
@@ -2203,6 +2434,17 @@ if (anthropicModelSlider) {
     if (currentProvider === 'anthropic') updateStatusForProvider();
   });
 }
+
+document.querySelectorAll('input[name="output-lang"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (!radio.checked) return;
+    outputLang = radio.value;
+    try { localStorage.setItem(OUTPUT_LANG_STORAGE, outputLang); } catch (e) {}
+    document.querySelectorAll('.lang-option').forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.lang === outputLang);
+    });
+  });
+});
 
 /* ===== ElevenLabs key handling ===== */
 /* Cache of the user's available voices (populated after key is verified).
@@ -3482,6 +3724,10 @@ function buildMasterPrompt(topic, attachments, depthKey) {
   lines.push("");
   lines.push("Each hat thinks in ONLY its mode. Do not blend. The discipline is the point.");
   lines.push("");
+  if (outputLang === 'it') {
+    lines.push("**LINGUA DI OUTPUT: scrivi il contenuto di TUTTI i sei cappelli in italiano**, in un italiano naturale e scorrevole, mantenendo per ciascun cappello lo stile e la disciplina descritti più sotto. Le intestazioni di sezione richieste nel formato di output (es. `⚪ WHITE HAT:`) restano OBBLIGATORIAMENTE in inglese esattamente come specificato, perché vengono lette da un parser automatico — solo il testo dentro ciascuna sezione va scritto in italiano.");
+    lines.push("");
+  }
   lines.push("---");
   lines.push("");
   lines.push("## The six disciplines — read these carefully");
@@ -3523,6 +3769,10 @@ function buildMasterPrompt(topic, attachments, depthKey) {
   lines.push("");
   lines.push("Inside each section you may use markdown (bold, italics, lists, paragraphs) freely — but the six section headers themselves must be EXACTLY as shown: emoji + space + UPPERCASE HAT NAME + colon. Nothing else on that line. Start your reply with `⚪ WHITE HAT:` — no preamble, no \"Here is the analysis…\".");
   lines.push("");
+  if (outputLang === 'it') {
+    lines.push("Ricorda: gli header restano in inglese come mostrato sopra, ma il contenuto di ciascuna sezione va scritto interamente in italiano.");
+    lines.push("");
+  }
   lines.push("---");
   lines.push("");
   lines.push("## The topic to analyze");
