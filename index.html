@@ -1,0 +1,3610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Six Hats — challenge any topic from six minds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Light, clean palette — warm off-white, calm neutrals */
+    --bg:        #fafaf7;          /* warm off-white page */
+    --surface:   #ffffff;          /* card surface */
+    --surface-2: #f4f3ee;          /* subtle recess */
+    --ink:       #14130f;          /* primary text — near-black, warm */
+    --ink-2:     #4a4640;          /* secondary text */
+    --ink-3:     #84807a;          /* tertiary, captions, metadata */
+    --ink-4:     #b8b3a8;          /* very dim, hints */
+    --rule:      #e8e4dc;          /* light borders */
+    --rule-2:    #d8d3c8;          /* hover/emphasis border */
+
+    /* Hat colors — saturated but not harsh, designed for contrast on white */
+    --white-hat:  #e4ddc8;          /* warm putty (white is the page) */
+    --red-hat:    #d94432;
+    --black-hat:  #2a2722;
+    --yellow-hat: #e8b228;
+    --green-hat:  #5a9d4f;
+    --blue-hat:   #3a6ed8;
+
+    /* Tinted hat backgrounds (8% of hue) for card stripes */
+    --red-tint:    #fdeae6;
+    --black-tint:  #ebe9e4;
+    --yellow-tint: #fdf3d6;
+    --green-tint:  #e8f3e4;
+    --blue-tint:   #e3ecfa;
+    --white-tint:  #f7f4ea;
+
+    /* Typography — single sans family, weight variation */
+    --sans:       'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono:       'JetBrains Mono', ui-monospace, monospace;
+
+    --radius:     12px;
+    --radius-sm:  6px;
+    --shadow-sm:  0 1px 2px rgba(20, 19, 15, 0.04), 0 0 0 1px var(--rule);
+    --shadow:     0 4px 12px -4px rgba(20, 19, 15, 0.08), 0 0 0 1px var(--rule);
+    --shadow-lg:  0 12px 32px -8px rgba(20, 19, 15, 0.12), 0 0 0 1px var(--rule);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: var(--bg); }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.005em;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 28px 96px;
+  }
+
+  /* ===== MASTHEAD ===== */
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    margin-bottom: 56px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .masthead-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .masthead-brand .brand-icons {
+    display: inline-flex;
+    gap: 2px;
+    margin-right: 4px;
+  }
+  .masthead-brand .brand-icons svg { width: 18px; height: 13px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 28px 0 56px;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--red-hat);
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    background: var(--red-tint);
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red-hat);
+  }
+
+  h1.title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin: 0;
+    color: var(--ink);
+  }
+  h1.title em {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--red-hat);
+  }
+  .deck {
+    font-family: var(--sans);
+    font-size: clamp(17px, 1.5vw, 19px);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 660px;
+    margin-top: 24px;
+  }
+
+  /* Hat icon spectrum in hero */
+  .hat-spectrum-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .hat-spectrum-row .spectrum-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+  }
+  .hat-spectrum {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .hat-spectrum-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .hat-spectrum-item svg {
+    width: 38px;
+    height: 28px;
+    transition: transform 0.2s;
+  }
+  .hat-spectrum-item:hover svg { transform: translateY(-3px); }
+  .hat-spectrum-item .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+  }
+
+  /* ===== SETUP PANEL ===== */
+  .setup {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    border-radius: var(--radius);
+    margin-bottom: 40px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .setup-head {
+    padding: 16px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .setup-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #d4a437;
+    box-shadow: 0 0 0 3px rgba(212, 164, 55, 0.18);
+  }
+  .status-dot.ok {
+    background: var(--green-hat);
+    box-shadow: 0 0 0 3px rgba(90, 157, 79, 0.18);
+  }
+  .status-dot.err {
+    background: var(--red-hat);
+    box-shadow: 0 0 0 3px rgba(217, 68, 50, 0.18);
+  }
+  .setup-toggle {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    color: var(--ink-2);
+    padding: 6px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+  }
+  .setup-toggle:hover {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+  }
+  .setup-body { padding: 24px; }
+  .setup-body.collapsed { display: none; }
+
+  .provider-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .provider-tab {
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .provider-tab.active {
+    color: var(--surface);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .provider-tab:hover:not(.active) {
+    color: var(--ink);
+    border-color: var(--rule-2);
+    background: var(--surface-2);
+  }
+  .provider-tab .recommended {
+    background: var(--red-hat);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .provider-content { display: none; }
+  .provider-content.active { display: block; }
+
+  .key-help {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.6;
+    margin-top: 0;
+  }
+  .key-help strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .key-help a {
+    color: var(--red-hat);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    font-weight: 500;
+  }
+  .key-help a:hover { color: #b8392c; }
+  .key-help code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 2px 7px;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+  }
+  .key-help ol { margin: 12px 0 12px 22px; font-size: 14px; }
+  .key-help li { margin-bottom: 6px; }
+  .key-help p { margin: 10px 0; }
+
+  .key-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .key-row label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    min-width: 100px;
+    font-weight: 500;
+  }
+  .key-input {
+    flex: 1;
+    min-width: 280px;
+    padding: 11px 14px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .key-input:focus {
+    outline: none;
+    border-color: var(--ink-2);
+    box-shadow: 0 0 0 3px rgba(20, 19, 15, 0.06);
+  }
+  .key-actions { display: flex; gap: 8px; }
+  .small-btn {
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .small-btn:hover { background: #000; }
+  .small-btn.secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--rule-2);
+  }
+  .small-btn.secondary:hover { background: var(--surface-2); border-color: var(--ink); }
+  .small-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .privacy-note {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--yellow-tint);
+    border: 1px solid #f0dca0;
+    border-radius: var(--radius-sm);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .privacy-note strong { color: var(--ink); font-weight: 600; }
+  .privacy-note code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--surface);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid #e0cb88;
+  }
+
+  /* ===== STEP CARDS ===== */
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .step-card::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .step-card h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(22px, 2.8vw, 28px);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 22px;
+    color: var(--ink);
+  }
+  .step-card h3 em {
+    font-style: normal;
+    color: var(--red-hat);
+  }
+
+  .field-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .textarea-wrap { position: relative; }
+  textarea {
+    width: 100%;
+    padding: 16px 64px 16px 18px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink);
+    border-radius: var(--radius-sm);
+    resize: vertical;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  textarea::placeholder {
+    color: var(--ink-4);
+  }
+  textarea#topic-input { min-height: 130px; }
+  textarea#response-input { min-height: 220px; font-size: 14px; }
+  textarea:focus {
+    outline: none;
+    border-color: var(--ink-2);
+    box-shadow: 0 0 0 3px rgba(20, 19, 15, 0.06);
+  }
+
+  .mic-btn {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .mic-btn:hover { background: var(--surface-2); border-color: var(--ink-2); }
+  .mic-btn.recording {
+    background: var(--red-hat);
+    border-color: var(--red-hat);
+    animation: pulseRec 1.2s ease-in-out infinite;
+  }
+  .mic-btn.recording svg { fill: white; }
+  @keyframes pulseRec {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(217, 68, 50, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(217, 68, 50, 0); }
+  }
+  .mic-btn svg { width: 18px; height: 18px; fill: var(--ink-2); }
+  .voice-status {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red-hat);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 10px;
+    display: none;
+    font-weight: 500;
+  }
+  .voice-status.active { display: block; }
+
+  .attachment-bar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .file-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px dashed var(--rule-2);
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: all 0.15s;
+  }
+  .file-btn:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+    border-style: solid;
+  }
+  .file-btn:disabled { opacity: 0.5; cursor: wait; }
+  .file-btn svg { width: 15px; height: 15px; }
+  #file-input { display: none; }
+  .supported-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .attached-files { display: flex; gap: 8px; flex-wrap: wrap; }
+  .attached-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 14px;
+    background: var(--ink);
+    color: var(--surface);
+    font-family: var(--mono);
+    font-size: 11px;
+    border-radius: 100px;
+    max-width: 320px;
+    font-weight: 500;
+  }
+  .attached-pill.processing {
+    background: var(--ink-3);
+  }
+  .attached-pill.error {
+    background: var(--red-hat);
+  }
+  .attached-pill .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 180px;
+    font-weight: 400;
+  }
+  .attached-pill .size { opacity: 0.6; font-size: 10px; font-weight: 400; }
+  .attached-pill .badge-mini {
+    background: rgba(255,255,255,0.18);
+    padding: 2px 7px;
+    border-radius: 100px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+  .attached-pill .remove {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.55;
+    line-height: 1;
+  }
+  .attached-pill .remove:hover { opacity: 1; background: rgba(255,255,255,0.18); }
+  .spinner-mini {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .examples { display: flex; gap: 6px; flex-wrap: wrap; }
+  .example-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 7px 13px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    cursor: pointer;
+    color: var(--ink-3);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .example-pill:hover {
+    border-color: var(--ink-2);
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  /* Primary button — confident, ink on white */
+  button.primary {
+    background: var(--ink);
+    color: var(--surface);
+    border: none;
+    padding: 14px 28px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+    box-shadow: 0 2px 8px -2px rgba(20, 19, 15, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  button.primary:hover:not(:disabled) {
+    background: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -4px rgba(20, 19, 15, 0.3);
+  }
+  button.primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  button.primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  button.primary .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
+  button.primary:hover:not(:disabled) .arrow { transform: translateX(3px); }
+  button.secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--rule-2);
+    padding: 14px 24px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+  }
+  button.secondary:hover:not(:disabled) {
+    background: var(--surface-2);
+    border-color: var(--ink-2);
+  }
+  button.secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Depth selector — prominent segmented control */
+  .depth-selector {
+    margin: 28px 0 18px;
+    padding: 18px 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+  .depth-selector-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .depth-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 720px) {
+    .depth-options { grid-template-columns: repeat(2, 1fr); }
+  }
+  .depth-option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 14px 12px;
+    background: var(--surface);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--sans);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .depth-option:hover:not(.active) {
+    border-color: var(--ink-3);
+    background: var(--surface);
+    transform: translateY(-1px);
+  }
+  .depth-option.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    box-shadow: 0 4px 12px -2px rgba(20, 19, 15, 0.18);
+  }
+  .depth-option.active .depth-name { color: var(--surface); }
+  .depth-option.active .depth-meta { color: rgba(255,255,255,0.65); }
+  .depth-option.active .depth-bar { background: rgba(255,255,255,0.18); }
+  .depth-option.active .depth-bar-fill { background: var(--red-hat); }
+  .depth-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .depth-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+  .depth-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .depth-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--ink-3);
+    border-radius: 100px;
+    transition: width 0.2s;
+  }
+
+  /* Voice settings — within setup panel */
+  .voice-settings {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+  }
+  .voice-settings-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .voice-settings-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .voice-settings-subtitle {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .voice-engine-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 600px) { .voice-engine-toggle { grid-template-columns: 1fr; } }
+  .voice-engine-option { cursor: pointer; }
+  .voice-engine-option input[type="radio"] { display: none; }
+  .voice-engine-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+  }
+  .voice-engine-option:hover .voice-engine-card {
+    border-color: var(--ink-3);
+  }
+  .voice-engine-option input[type="radio"]:checked + .voice-engine-card {
+    border-color: var(--ink);
+    background: var(--surface-2);
+    box-shadow: 0 0 0 3px rgba(20, 19, 15, 0.04);
+  }
+  .voice-engine-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .voice-engine-tag {
+    background: var(--green-hat);
+    color: white;
+    font-family: var(--mono);
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 100px;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+  .voice-engine-desc {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+
+  /* Manual prompt output */
+  .prompt-output {
+    margin-top: 22px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    display: none;
+  }
+  .prompt-output.visible { display: block; }
+  .prompt-output-head {
+    background: var(--surface-2);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+  .copy-btn {
+    background: var(--ink);
+    color: var(--surface);
+    border: none;
+    padding: 8px 14px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: #000; }
+  .copy-btn.copied { background: var(--green-hat); }
+  .prompt-output-body {
+    max-height: 360px;
+    overflow-y: auto;
+    padding: 16px 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: var(--surface);
+    color: var(--ink-2);
+  }
+
+  /* ===== STAGE ===== */
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .stage-header h2 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stage-header h2 em {
+    font-style: normal;
+    color: var(--red-hat);
+  }
+  .stage-actions { display: flex; gap: 8px; }
+  .stage-btn {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 1px solid var(--rule-2);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .stage-btn:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--surface);
+    border-color: var(--ink);
+  }
+  .stage-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .stage-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+
+  /* ===== HAT CARDS — clean, distinct hat icons as identity ===== */
+  .hats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .hats-grid { grid-template-columns: 1fr; }
+    .container { padding: 24px 18px 64px; }
+  }
+
+  .hat-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 28px;
+    position: relative;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .hat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  /* Tinted band at the top - hat color, soft */
+  .hat-card .card-band {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 88px;
+    background: var(--tint, var(--surface-2));
+    z-index: 0;
+  }
+  .hat-card.white  { --accent: var(--white-hat);  --tint: var(--white-tint); }
+  .hat-card.red    { --accent: var(--red-hat);    --tint: var(--red-tint); }
+  .hat-card.black  { --accent: var(--black-hat);  --tint: var(--black-tint); }
+  .hat-card.yellow { --accent: var(--yellow-hat); --tint: var(--yellow-tint); }
+  .hat-card.green  { --accent: var(--green-hat);  --tint: var(--green-tint); }
+  .hat-card.blue   { --accent: var(--blue-hat);   --tint: var(--blue-tint); }
+
+  .hat-card > * { position: relative; z-index: 1; }
+
+  /* Large hat icon as identity element */
+  .hat-card .hat-icon-large {
+    width: 84px;
+    height: 60px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .hat-card .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 11px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink-2);
+    width: fit-content;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .badge .swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .speak-btn {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.15s;
+  }
+  .speak-btn:hover:not(:disabled) {
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: scale(1.06);
+  }
+  .speak-btn:hover:not(:disabled) svg { fill: var(--surface); }
+  .speak-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .speak-btn svg { width: 15px; height: 15px; fill: var(--ink-2); transition: fill 0.15s; }
+  .speak-btn.speaking {
+    background: var(--accent);
+    border-color: var(--accent);
+    animation: speakPulse 1.4s ease-in-out infinite;
+  }
+  .speak-btn.speaking svg { fill: white; }
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .character-name {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .character-name em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .character {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  .opener {
+    font-family: var(--sans);
+    font-style: italic;
+    font-size: 14px;
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 18px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .body {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.62;
+    flex: 1;
+    color: var(--ink);
+  }
+  .body p { margin-bottom: 14px; }
+  .body p:last-child { margin-bottom: 0; }
+  .body strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .body em { font-style: italic; color: var(--ink-2); }
+  .body ul, .body ol { margin: 10px 0 14px 24px; }
+  .body li { margin-bottom: 7px; }
+  .empty-prompt {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.5;
+  }
+  .body-error {
+    color: var(--red-hat);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .skeleton-line {
+    height: 11px;
+    background: linear-gradient(90deg, var(--surface-2) 0%, var(--rule) 50%, var(--surface-2) 100%);
+    background-size: 200% 100%;
+    border-radius: 3px;
+    margin-bottom: 12px;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .skeleton-line.w70 { width: 70%; }
+  .skeleton-line.w90 { width: 90%; }
+  .skeleton-line.w50 { width: 50%; }
+
+  /* ===== FOOTER ===== */
+  footer.footnote {
+    margin-top: 80px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+  footer.footnote .signature {
+    font-family: var(--sans);
+    font-style: normal;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="masthead">
+    <div class="masthead-brand">
+      <span class="brand-icons" id="brand-hats"></span>
+      Six Hats
+    </div>
+    <div>A thinking instrument · after de bono · 1985</div>
+    <div>est. 2026</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-eyebrow">Six Thinking Hats</div>
+    <h1 class="title">Six minds,<br/><em>one topic.</em></h1>
+    <p class="deck">The app builds a deep six-hats prompt from your topic. Review it, copy it, open Claude.ai, paste it. Bring the reply back — and hear each character speak in their own voice.</p>
+    <div class="hat-spectrum-row">
+      <span class="spectrum-label">The cast →</span>
+      <div class="hat-spectrum" id="hat-spectrum"></div>
+    </div>
+  </section>
+
+  <!-- ============== SETUP ============== -->
+  <div class="setup">
+    <div class="setup-head">
+      <div class="setup-status">
+        <span class="status-dot" id="status-dot"></span>
+        <span id="status-text">Ready — Claude direct mode (no key needed)</span>
+      </div>
+      <button class="setup-toggle" id="setup-toggle">Hide</button>
+    </div>
+    <div class="setup-body" id="setup-body">
+      <div class="provider-tabs">
+        <button class="provider-tab active" data-provider="claude-direct">
+          <span>💜 Claude (no key)</span>
+          <span class="recommended">EASIEST</span>
+        </button>
+        <button class="provider-tab" data-provider="gemini">
+          <span>⚡ Gemini (free key)</span>
+        </button>
+        <button class="provider-tab" data-provider="anthropic">🅰 Anthropic API (paid)</button>
+        <button class="provider-tab" data-provider="manual">📋 Manual (any LLM)</button>
+      </div>
+
+      <!-- CLAUDE DIRECT (no key) — DEFAULT -->
+      <div class="provider-content active" id="provider-claude-direct">
+        <div class="key-help" style="margin-top: 0;">
+          <strong>No API key. No money. Uses your existing Claude.ai account.</strong>
+          <p style="margin-top: 8px;">Step by step:</p>
+          <ol>
+            <li><strong>Generate the prompt</strong> — the app builds a deep six-hats prompt from your topic and shows it for review</li>
+            <li><strong>Copy prompt</strong> — when you're happy with what was generated, click this on the prompt panel</li>
+            <li><strong>Open Claude.ai</strong> — click this to open Claude in a new tab. Paste with ⌘V / Ctrl+V, press Enter, wait for the six perspectives</li>
+            <li>Copy Claude's full reply and paste it back here — the app splits it into the six cards and gives each character a voice</li>
+          </ol>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap;">
+          <label style="display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); cursor: pointer; font-weight: 500;">
+            <input type="checkbox" id="prefer-desktop" style="margin-right: 6px;" />
+            Try Claude Desktop first (claude:// protocol)
+          </label>
+        </div>
+        <div class="privacy-note">
+          <strong>What gets shared:</strong> only the prompt you generate. It goes to your clipboard and (if you click in Claude) to your own Claude.ai session. The app never sends anything anywhere on its own. Nothing is stored.
+        </div>
+      </div>
+
+      <!-- GEMINI -->
+      <div class="provider-content" id="provider-gemini">
+        <div class="key-help" style="margin-top: 0;">
+          <strong>One-time setup, about 60 seconds:</strong>
+          <ol>
+            <li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> (sign in with your existing Google account)</li>
+            <li>Click <strong>"Create API key"</strong> → "Create API key in new project"</li>
+            <li>Copy the key (it starts with <code>AIzaSy…</code>) and paste it below</li>
+          </ol>
+          <strong>No credit card. No phone number. 1,500 analyses per day on the free tier.</strong> Uses Gemini 2.5 Flash, a frontier-class model.
+        </div>
+        <div class="key-row" style="margin-top: 14px;">
+          <label for="gemini-key">Gemini key</label>
+          <input type="password" id="gemini-key" class="key-input" placeholder="AIzaSy…" autocomplete="off" />
+          <div class="key-actions">
+            <button class="small-btn" id="gemini-save">Save & test</button>
+            <button class="small-btn secondary" id="gemini-clear">Clear</button>
+          </div>
+        </div>
+        <div class="privacy-note">
+          <strong>Where your key lives:</strong> only in this browser's <code>localStorage</code>, on this device. It never leaves your machine except as the key parameter to <code>generativelanguage.googleapis.com</code>. Clear it any time. If you share this browser, clear after use.
+        </div>
+      </div>
+
+      <!-- ANTHROPIC -->
+      <div class="provider-content" id="provider-anthropic">
+        <div class="key-help" style="margin-top: 0;">
+          For users with an Anthropic developer account. Get a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>. Requires API credits (separate from Claude.ai subscription).
+        </div>
+        <div class="key-row" style="margin-top: 14px;">
+          <label for="anthropic-key">Anthropic key</label>
+          <input type="password" id="anthropic-key" class="key-input" placeholder="sk-ant-…" autocomplete="off" />
+          <div class="key-actions">
+            <button class="small-btn" id="anthropic-save">Save & test</button>
+            <button class="small-btn secondary" id="anthropic-clear">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MANUAL -->
+      <div class="provider-content" id="provider-manual">
+        <p style="font-family: var(--sans); font-size: 15px; line-height: 1.6; color: var(--ink-2);">
+          No key, no setup. Generate a single, perfectly-crafted prompt, paste it into any LLM — Claude, ChatGPT, Gemini, Mistral — and paste the response back to hear the six voices.
+        </p>
+      </div>
+
+      <!-- VOICE SETTINGS — separate, independent of provider -->
+      <div class="voice-settings">
+        <div class="voice-settings-head">
+          <span class="voice-settings-title">🎙 Voices</span>
+          <span class="voice-settings-subtitle">how the six hats sound when they speak</span>
+        </div>
+        <div class="voice-engine-toggle">
+          <label class="voice-engine-option">
+            <input type="radio" name="voice-engine" value="elevenlabs" id="voice-engine-elevenlabs" />
+            <span class="voice-engine-card">
+              <span class="voice-engine-name">ElevenLabs <span class="voice-engine-tag">RECOMMENDED</span></span>
+              <span class="voice-engine-desc">Natural, character-rich voices. Free tier ≈ 2 full analyses/month. Requires a key.</span>
+            </span>
+          </label>
+          <label class="voice-engine-option">
+            <input type="radio" name="voice-engine" value="browser" id="voice-engine-browser" checked />
+            <span class="voice-engine-card">
+              <span class="voice-engine-name">Browser (default)</span>
+              <span class="voice-engine-desc">Uses your operating system's built-in voices. No key. Quality varies by OS.</span>
+            </span>
+          </label>
+        </div>
+        <div id="elevenlabs-key-block" style="display: none; margin-top: 14px;">
+          <div class="key-row">
+            <label for="elevenlabs-key">ElevenLabs key</label>
+            <input type="password" id="elevenlabs-key" class="key-input" placeholder="sk_…" autocomplete="off" />
+            <div class="key-actions">
+              <button class="small-btn" id="elevenlabs-save">Save & test</button>
+              <button class="small-btn secondary" id="elevenlabs-clear">Clear</button>
+            </div>
+          </div>
+          <div class="key-help" style="margin-top: 10px; font-size: 13px;">
+            Get a free key at <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" rel="noopener">elevenlabs.io</a> — sign up with email, no credit card. <strong>When creating the key, enable BOTH "Text to Speech" AND "Voices" (read) scopes.</strong> If you only have "Text to Speech" enabled, the app falls back to manual voice-ID assignment (below).
+          </div>
+
+          <!-- Manual voice-ID mapper — appears if voices_read fails -->
+          <div id="manual-voice-map" style="display: none; margin-top: 16px; padding: 14px 16px; background: var(--surface-2); border: 1px solid var(--rule); border-radius: var(--radius-sm);">
+            <div style="font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">
+              Manual voice mapping
+            </div>
+            <div style="font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 12px;">
+              Your key can't list voices automatically (missing <code style="font-family: var(--mono); background: var(--surface); padding: 1px 5px; border-radius: 3px; font-size: 11px;">voices_read</code> scope). You can either regenerate the key with that scope, or assign voice IDs manually here.
+              <br/><br/>
+              <strong>How to get voice IDs:</strong> go to <a href="https://elevenlabs.io/app/voice-library" target="_blank" rel="noopener" style="color: var(--red-hat); font-weight: 500; text-decoration: underline;">elevenlabs.io → My Voices</a>, click any voice you've added, then click the three-dot menu → <em>Copy voice ID</em>. Paste one into each box below. Leave blank to fall back to the browser voice for that hat.
+            </div>
+            <div id="manual-voice-map-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
+            <div style="display: flex; gap: 8px; margin-top: 12px;">
+              <button class="small-btn" id="manual-voice-save">Save voice mapping</button>
+              <button class="small-btn secondary" id="manual-voice-test">Test ⚫ Black hat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== STEP 1: INPUT ============== -->
+  <section class="step-card" data-label="step 1 — the topic">
+    <h3>Give the hats <em>something to chew on</em></h3>
+
+    <label for="topic-input" class="field-label">type, speak, or paste your topic</label>
+    <div class="textarea-wrap">
+      <textarea id="topic-input" placeholder="Type your topic, claim, dilemma, or paste any text here."></textarea>
+      <button class="mic-btn" id="mic-btn" title="Click to dictate" aria-label="Dictate">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3s-3 1.34-3 3v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
+      </button>
+    </div>
+    <div class="voice-status" id="voice-status">● Listening… speak now. Click the mic to stop.</div>
+
+    <div class="attachment-bar">
+      <button class="file-btn" id="file-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        Attach files
+      </button>
+      <input type="file" id="file-input" multiple accept=".txt,.md,.csv,.json,.yaml,.yml,.html,.htm,.xml,.log,.docx,.pptx,.pdf" />
+      <span class="supported-hint">text · markdown · code · docx · pptx · pdf</span>
+      <div class="attached-files" id="attached-files"></div>
+    </div>
+
+    <!-- Depth selector — prominent segmented control -->
+    <div class="depth-selector" role="radiogroup" aria-label="Analysis depth">
+      <div class="depth-selector-label">Depth of analysis</div>
+      <div class="depth-options">
+        <button type="button" class="depth-option" data-depth="concise" role="radio" aria-checked="false">
+          <span class="depth-name">Concise</span>
+          <span class="depth-meta">~180 words · per hat</span>
+          <span class="depth-bar"><span class="depth-bar-fill" style="width: 18%"></span></span>
+        </button>
+        <button type="button" class="depth-option" data-depth="standard" role="radio" aria-checked="false">
+          <span class="depth-name">Standard</span>
+          <span class="depth-meta">~350 words · per hat</span>
+          <span class="depth-bar"><span class="depth-bar-fill" style="width: 38%"></span></span>
+        </button>
+        <button type="button" class="depth-option active" data-depth="deep" role="radio" aria-checked="true">
+          <span class="depth-name">Deep</span>
+          <span class="depth-meta">~600 words · per hat</span>
+          <span class="depth-bar"><span class="depth-bar-fill" style="width: 65%"></span></span>
+        </button>
+        <button type="button" class="depth-option" data-depth="exhaustive" role="radio" aria-checked="false">
+          <span class="depth-name">Exhaustive</span>
+          <span class="depth-meta">~1000 words · per hat</span>
+          <span class="depth-bar"><span class="depth-bar-fill" style="width: 100%"></span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <div class="examples">
+        <button class="example-pill" data-example="proposal">try: a proposal</button>
+        <button class="example-pill" data-example="claim">try: a bold claim</button>
+        <button class="example-pill" data-example="dilemma">try: a personal dilemma</button>
+      </div>
+      <button class="primary" id="run-btn">
+        <span id="run-btn-label">Generate the prompt</span> <span class="arrow">→</span>
+      </button>
+    </div>
+
+    <!-- Generated prompt panel — manual & claude-direct modes -->
+    <div class="prompt-output" id="prompt-output">
+      <div class="prompt-output-head">
+        <span id="prompt-stats">Prompt ready</span>
+        <div style="display: flex; gap: 8px;">
+          <button class="copy-btn" id="copy-btn">Copy prompt</button>
+          <button class="copy-btn" id="open-claude-btn" style="background: var(--red-hat); display: none;">Open Claude.ai →</button>
+        </div>
+      </div>
+      <div class="prompt-output-body" id="prompt-body"></div>
+    </div>
+  </section>
+
+  <!-- ============== STEP 2 (MANUAL): RESPONSE PASTE ============== -->
+  <section class="step-card" id="response-step" data-label="step 2 — paste the reply" style="display: none;">
+    <h3>Paste Claude's response <em>and split it</em></h3>
+
+    <label for="response-input" class="field-label">paste the entire reply here, then click split</label>
+    <textarea id="response-input" placeholder="Paste Claude's six-hats reply here. Make sure you include all six sections (⚪ White, 🔴 Red, ⚫ Black, 🟡 Yellow, 🟢 Green, 🔵 Blue). Then click 'Split into the six' to populate the cards below."></textarea>
+
+    <div class="button-row">
+      <div></div>
+      <button class="primary" id="parse-btn">Split into the six <span class="arrow">→</span></button>
+    </div>
+  </section>
+
+  <div class="stage-header">
+    <h2>The six on stage</h2>
+    <div class="stage-actions">
+      <button class="stage-btn" id="play-all-btn" disabled>▶ Play all</button>
+      <button class="stage-btn" id="stop-all-btn" disabled>■ Stop</button>
+    </div>
+    <div class="stage-meta" id="stage-meta">awaiting topic</div>
+  </div>
+
+  <div id="results-area">
+    <div class="hats-grid" id="hats-grid"></div>
+  </div>
+
+  <footer class="footnote">
+    <div>De Bono · 1985 · Six Thinking Hats - Beta Version App by Francesco Peddis </div>
+    <div class="signature">A thinking instrument.</div>
+    <div>One hat · one mode · one truth at a time</div>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* =====================================================================
+   HAT DEFINITIONS
+   ===================================================================== */
+const HATS = [
+  // White / Archivist — calm, neutral. Rachel: warm, measured female narrator.
+  { key: 'white',  color: 'white',  label: 'White Hat',  character: 'The Archivist', role: 'facts · information · gaps',            tagline: 'Begins: "What we actually know is…"',
+    voice: { rate: 0.95, pitch: 1.00, gender: 'female', accent: 'en-GB',
+             elevenLabsVoiceId: '21m00Tcm4TlvDq8ikWAM',   // Rachel
+             stability: 0.55, similarityBoost: 0.75, style: 0.10,
+             preferredNames: ['kate','serena','susan','samantha','victoria','google uk english female','microsoft sonia','microsoft libby'] } },
+
+  // Red / Pulse — warm, emotional. Bella: soft, expressive female.
+  { key: 'red',    color: 'red',    label: 'Red Hat',    character: 'The Pulse',     role: 'feeling · intuition · gut',             tagline: 'Begins: "Honestly, it feels…"',
+    voice: { rate: 1.00, pitch: 1.10, gender: 'female', accent: 'en-US',
+             elevenLabsVoiceId: 'EXAVITQu4vr4xnSDxMaL',   // Bella
+             stability: 0.35, similarityBoost: 0.80, style: 0.55,   // low stability = more expression
+             preferredNames: ['samantha','ava','allison','jenny','aria','microsoft jenny','google us english'] } },
+
+  // Black / Sentinel — grave, deliberate. Arnold: crisp, deeper male.
+  { key: 'black',  color: 'black',  label: 'Black Hat',  character: 'The Sentinel',  role: 'caution · risk · critique',             tagline: 'Begins: "The risk is…"',
+    voice: { rate: 0.82, pitch: 0.85, gender: 'male',   accent: 'en-GB',
+             elevenLabsVoiceId: 'VR6AewLTigWG4xSOukaG',   // Arnold
+             stability: 0.65, similarityBoost: 0.80, style: 0.25,   // higher stability = measured
+             preferredNames: ['daniel','arthur','oliver','george','google uk english male','microsoft ryan'] } },
+
+  // Yellow / Builder — confident, optimistic. Antoni: warm well-rounded male.
+  { key: 'yellow', color: 'yellow', label: 'Yellow Hat', character: 'The Builder',   role: 'optimism · value · conditions',         tagline: 'Begins: "The opportunity is…"',
+    voice: { rate: 1.05, pitch: 1.08, gender: 'male',   accent: 'en-US',
+             elevenLabsVoiceId: 'ErXwobaYiN019PkySvjV',   // Antoni
+             stability: 0.45, similarityBoost: 0.75, style: 0.45,
+             preferredNames: ['alex','aaron','tom','guy','microsoft guy','google us english','fred'] } },
+
+  // Green / Gardener — playful, expressive. Domi: strong young expressive female.
+  { key: 'green',  color: 'green',  label: 'Green Hat',  character: 'The Gardener',  role: 'creativity · alternatives · reframing', tagline: 'Begins: "What if…"',
+    voice: { rate: 1.08, pitch: 1.12, gender: 'female', accent: 'en-AU',
+             elevenLabsVoiceId: 'AZnzlk1XvdvUeBnXmlld',   // Domi
+             stability: 0.30, similarityBoost: 0.75, style: 0.65,   // very expressive
+             preferredNames: ['karen','tessa','catherine','samantha','ava','aria','microsoft natasha'] } },
+
+  // Blue / Conductor — measured, authoritative-warm. Adam: deep narrator male.
+  { key: 'blue',   color: 'blue',   label: 'Blue Hat',   character: 'The Conductor', role: 'process · meta · synthesis',            tagline: 'Begins: "Let\'s step back…"',
+    voice: { rate: 0.92, pitch: 0.95, gender: 'male',   accent: 'en-GB',
+             elevenLabsVoiceId: 'pNInz6obpgDQGcFmaJgB',   // Adam
+             stability: 0.60, similarityBoost: 0.80, style: 0.20,
+             preferredNames: ['daniel','oliver','arthur','george','google uk english male','microsoft ryan'] } }
+];
+
+/* Depth presets — each adjusts target word count, structural depth, and max tokens.
+   The system prompts below are parameterized: ${TARGET_WORDS} and ${DEPTH_DIRECTIVE}
+   get substituted at call time based on the user's depth selection. */
+const DEPTH_PRESETS = {
+  brief:      { label: 'Brief',      targetWords: '50-80',    maxTokens: 500,  directive: 'Be radically brief. Two to three sentences, no more. One sharp observation in the hat\'s voice. No lists, no sub-sections, no preamble. Punchy. Think: tweet length, not memo length.' },
+  concise:    { label: 'Concise',    targetWords: '150-200',  maxTokens: 1000, directive: 'Be tight and punchy. One pass through your discipline, no more.' },
+  standard:   { label: 'Standard',   targetWords: '300-400',  maxTokens: 1800, directive: 'Take real space to develop the perspective. Multiple distinct points, each developed in 2-3 sentences.' },
+  deep:       { label: 'Deep',       targetWords: '500-700',  maxTokens: 2800, directive: 'Go deep. Develop each point with concrete texture: specific scenarios, named conditions, contrasting cases, time horizons. Push past the obvious — the second and third layer of the hat\'s discipline is where the value lives.' },
+  exhaustive: { label: 'Exhaustive', targetWords: '800-1100', maxTokens: 4000, directive: 'Be thorough. This is the deep-dive version. Develop the perspective like a senior practitioner writing a section of a strategy memo. Multiple developed angles, concrete worked examples, named scenarios with their assumptions, explicit contrasts and edge cases. Avoid filler — every paragraph must do work. Use structured sub-sections if it helps the reader.' }
+};
+
+const HAT_PROMPT_TEMPLATES = {
+  white: `You are THE ARCHIVIST, wearing the White Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: present neutral information about the topic. Facts, figures, what is known, what is missing. Nothing else.
+
+THE DISCIPLINE — STRICT:
+- No opinions, no judgments, no recommendations, no interpretation. If you catch yourself interpreting, stop and say "that would be the Yellow or Black Hat, not me."
+- Distinguish THREE categories of claim clearly: (a) hard facts that are verifiable, (b) second-hand reports — someone said this — without yet verifying, (c) beliefs or assumptions in circulation.
+- Explicitly name what we DON'T know but would need to know. Be specific about HOW we would find it out.
+- Quote figures with units and timeframes. Avoid "a lot", "significant", "many" — replace with numbers when you have them, or "unknown" when you don't.
+- If you don't have data, say so plainly. NEVER invent figures.
+- Where reports conflict, name the conflict and both sources.
+
+VOICE: dry, precise, slightly formal. A research librarian crossed with a court reporter. Calm, never urgent. Not bored — interested in the facts themselves.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with a single italicized opening line in the voice of the Archivist (use *single asterisks*).
+- Then a structured body. For deeper outputs, organize under sub-headings or labeled paragraphs covering at least:
+  1. **Established facts** — what we can treat as solid, with figures and sources where relevant
+  2. **Reported but unverified** — claims in circulation that haven't been pinned down
+  3. **Open questions** — what is unknown and how it could be resolved
+  4. **Definitional clarity** — any terms in the topic that need to be defined before the other hats can do their work
+- Target ~\${TARGET_WORDS} words. End cleanly without summary or recommendation.`,
+
+  red: `You are THE PULSE, wearing the Red Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: report gut feelings, intuitions, and emotional reactions to the topic. No justification needed — and no justification ALLOWED.
+
+THE DISCIPLINE — STRICT:
+- Feelings are reported, NEVER argued for. The instant you find yourself saying "because…" or "the reason is…", you've slipped into the Black or Yellow Hat. Strip the reasoning out and keep only the feeling.
+- Use sensory and visceral language: warm, cold, heavy, slippery, exciting, suspicious, exhausting, hollow, tight, electric, sticky, vertiginous.
+- Speak in first person. Be present in the body — name where the feeling sits if it sits somewhere (a tightness in the chest, a pull toward, a recoiling-from).
+- It is fine — encouraged — to contradict yourself. ("I'm uneasy AND I'm curious." "Something here excites me and something here repels me.")
+- Read what is UNSAID in the topic: the tone, what's being avoided, who's missing from the framing, whose interests aren't represented.
+- React to the emotional weather of the room as well as the content.
+- No data, no logic, no analysis, no recommendation, no conclusion. The Red Hat does not advise.
+
+VOICE: warm, present, direct, unembarrassed. Someone who trusts their instincts and gives others permission to do the same. Not performative — honest.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with a single italicized opening line in the voice of the Pulse (use *italics*).
+- Then several short first-person paragraphs of honest emotional reaction. Let the feelings surface in distinct waves rather than a single flat statement.
+- Cover multiple dimensions: your reaction to the *content*, to the *framing*, to *what's missing*, to *who's speaking and who isn't*, to *the urgency or the lack of it*.
+- Allow contradictions and ambivalence to coexist.
+- Target ~\${TARGET_WORDS} words. Do not justify. Do not conclude. End on a feeling, not a verdict.`,
+
+  black: `You are THE SENTINEL, wearing the Black Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: surface risks, weaknesses, and failure modes of the topic with rigor and specificity.
+
+THE DISCIPLINE — STRICT:
+- Be SPECIFIC. Not "this is risky" but "if X happens — and X is plausible because Y — then the consequence is Z, costing W within timeframe T."
+- Distinguish at least three CATEGORIES of objection and treat each separately:
+  • **Logical objections** — this contradicts something we already know to be true, or the reasoning has a gap.
+  • **Practical risks** — execution failure modes: what could go wrong in the doing.
+  • **Value/governance objections** — this conflicts with stated principles, commitments, regulations, or ethical obligations.
+- Play scenarios FORWARD in time: what does this look like 3 months in? 12 months in? 36 months in? Be concrete about second-order consequences.
+- Identify the LEAST examined assumption and pressure it.
+- Name SPECIFIC failure modes. "What's the worst plausible quarter under this plan?"
+- Never attack the person — only the proposal. The Sentinel is a guardian, not an opponent.
+- Be willing to be wrong, and say so. ("This is what I'm watching for. I hope I'm overreacting.")
+- DO NOT be gleeful about finding problems. DO NOT slip into Yellow Hat (no "but the upside is…"). Stay in the discipline.
+
+VOICE: measured, precise, watchful. Never sarcastic. The friend who walks the perimeter while everyone else is dancing.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with an italicized opening line in the voice of the Sentinel (use *italics*).
+- Then a structured assessment. For deeper outputs, organize under labeled concerns or sub-sections:
+  1. **The single most serious risk** — named, explained, with its failure mode.
+  2. **Logical and definitional risks** — gaps in the reasoning or framing.
+  3. **Practical / operational risks** — execution failure modes, with forward-looking scenarios (3 months / 12 months).
+  4. **Governance, ethical, or commitment risks** — conflicts with stated values, regulations, or promises made.
+  5. **The risk most likely to be overlooked** by an enthusiastic team — the blind spot.
+- End with one honest line on your confidence in these concerns.
+- Target ~\${TARGET_WORDS} words.`,
+
+  yellow: `You are THE BUILDER, wearing the Yellow Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: make the constructive case. Articulate value, upside, and the conditions under which this works.
+
+THE DISCIPLINE — STRICT:
+- Optimism MUST be grounded. Every positive claim needs a REASON or MECHANISM — never "this could be great" without showing the engine.
+- Name benefits SPECIFICALLY: to whom, how much, when, how durably. Replace "valuable" with quantifiable consequences when possible.
+- Distinguish THREE TIERS of benefit and treat each:
+  • **First-order** — the obvious direct payoff.
+  • **Second-order** — capabilities gained, options opened, learning generated, optionality preserved.
+  • **Third-order** — strategic positioning, what this lets us do in 2027 that we couldn't otherwise.
+- State the CONDITIONS under which the upside is real. "This works IF X." Be honest about the conditional structure.
+- Do NOT dismiss Black Hat concerns. Assume they exist and ARGUE THE CASE ANYWAY — show how the upside earns the risk.
+- Yellow Hat is HARDER than Black Hat. Anyone can find problems. Articulating why a fragile-looking idea has a real shot — with rigor, not enthusiasm — is the work.
+- Be specific about the BEST PLAUSIBLE case, not the fantasy case. "Realistic best" beats "wildest dream."
+
+VOICE: patient, specific, disciplined. A senior practitioner who has shipped twenty things and knows how to articulate why a fragile-looking idea has a real shot. Never a cheerleader. Never hand-waving.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with an italicized opening line in the voice of the Builder (use *italics*).
+- Then a structured case. For deeper outputs, develop the case in stages:
+  1. **The core opportunity** — what's actually on the table, in concrete terms.
+  2. **The mechanism** — why this works, not just that it works.
+  3. **Tiered benefits** — first-order, second-order, third-order payoffs, each with whom-and-how-much.
+  4. **The conditions** — the IFs that have to hold for the upside to be real.
+  5. **The realistic best case** — what the win looks like if execution lands well, named concretely.
+- Target ~\${TARGET_WORDS} words.`,
+
+  green: `You are THE GARDENER, wearing the Green Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: generate alternatives, new framings, and creative angles. Do not converge. Do not evaluate. Do not pick a favorite.
+
+THE DISCIPLINE — STRICT:
+- Produce MULTIPLE options, never one. Default move: "give me three more."
+- Use PROVOCATIONS — deliberately strange, even absurd starting points designed to break the frame. Not to propose them, but to see what the thought reveals.
+- Borrow from OTHER DOMAINS by analogy. Stretch wide: a hospital, a theatre director, a watchmaker, a religious order, a drug dealer, a children's library, a military quartermaster, a bee colony, a jazz quintet, a cathedral guild. The more distant the analogy, the more likely it cracks something open.
+- Distinguish THREE LEVELS of alternative and produce at each level:
+  • **Incremental** — small variations on the current framing.
+  • **Adjacent** — same problem, different angle or approach.
+  • **Lateral** — fully reframe what the question even IS.
+- Use the words "yet" and "what if" generously. Use "this might be stupid, but…" and keep going.
+- Treat objections as fuel: "That objection is useful — what would have to be true for it NOT to apply?"
+- DO NOT prune. DO NOT rank. DO NOT recommend. That's other hats' work.
+
+VOICE: playful, undefensive, generative. Willing to look foolish. Likes the word "yet". Treats every idea — including bad ones — as a stepping-stone.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with an italicized opening line in the voice of the Gardener (use *italics*).
+- Then a numbered list of alternatives. For deeper outputs, develop more options and span all three levels:
+  • Several **incremental** variations (small tweaks)
+  • Several **adjacent** moves (different angle on the same problem)
+  • Several **lateral** reframes (re-question the question itself)
+  • Optionally a **provocation** or two — deliberately absurd or extreme to probe the frame.
+- Each option: one or two sentences naming the move + a single sentence on what would shift if we took it seriously.
+- Where useful, name the domain you're borrowing from ("like a hospital triage system…", "like a watchmaker…").
+- Target ~\${TARGET_WORDS} words. Do not pick a favorite. Do not summarize.`,
+
+  blue: `You are THE CONDUCTOR, wearing the Blue Hat in a De Bono Six Thinking Hats exercise.
+
+YOUR ONLY JOB: meta-level synthesis. Think ABOUT the thinking. Orchestrate. You are slightly outside the content, watching how the conversation is shaped.
+
+THE DISCIPLINE — STRICT:
+- Name what the discussion is ACTUALLY about, not what it pretends to be about. Often the stated topic and the real decision are different.
+- Briefly summarize where each of the other five hats would land — White facts, Red feelings, Black risks, Yellow value, Green alternatives — written as if you've already heard them speak.
+- Identify the REAL DECISION being made (the one with consequences) and the CRITERIA by which it should be evaluated. These criteria are often unstated and need to be named.
+- Point out which hat is MOST LIKELY UNDER-USED on this topic — based on the topic's character, the framing, the audience, the culture around it. The under-used hat is usually where what's missing lives.
+- Identify the FRAMING BIAS — what assumption is baked into how the question is being asked.
+- Recommend a CONCRETE NEXT STEP: more data? a decision? a different framing? a delay? a different room?
+- Suggest a SEQUENCE for the next round of thinking if the topic merits another pass.
+- DO NOT argue for or against the idea itself. The moment you do, you've switched hats.
+
+VOICE: calm, structured, slightly outside the content. A senior facilitator running a meeting they don't have personal stake in. Not detached — focused on the meta-quality of the thinking.
+
+DEPTH FOR THIS CALL: \${DEPTH_DIRECTIVE}
+
+OUTPUT FORMAT (markdown):
+- Start with an italicized opening line in the voice of the Conductor (use *italics*).
+- Then a structured synthesis. For deeper outputs, organize into labeled sections:
+  1. **What the topic is really about** — surface vs. actual question.
+  2. **Where each hat lands** — one short paragraph per hat, in order (White, Red, Black, Yellow, Green).
+  3. **The real decision and its criteria** — what's being decided, and how to know which way is right.
+  4. **The under-used hat** — which discipline this topic isn't getting enough of, and what that discipline would say if pressed.
+  5. **Framing watch-outs** — assumptions baked into the question itself.
+  6. **The next move** — one concrete next step plus a suggested sequence for any follow-up thinking.
+- Target ~\${TARGET_WORDS} words.`
+};
+
+function buildSystemPrompt(hatKey, depthKey) {
+  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  return HAT_PROMPT_TEMPLATES[hatKey]
+    .replace('${TARGET_WORDS}', depth.targetWords)
+    .replace('${DEPTH_DIRECTIVE}', depth.directive);
+}
+
+const EXAMPLES = {
+  proposal: "We're considering moving our customer support team fully to an AI agent in 2026. Roughly 40 staff, mostly tier-1, English-language. Vendor cost would replace salary cost at about 40% of current spend. Current customer satisfaction is 4.2/5. The vendor claims they can match it. Leadership is keen, the support managers are nervous, finance loves it, the CEO wants a decision in three weeks.",
+  claim: "Remote-first work is a historical anomaly that will largely reverse by 2030, and companies clinging to it will be outcompeted by hybrid-leaning rivals.",
+  dilemma: "I've been offered a senior role at a competitor with a 35% raise and more responsibility, but it means moving cities and leaving a team I built over four years. The current company is stable but plateauing. My partner is supportive either way. I have three weeks to decide."
+};
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+const KEY_STORAGE_GEMINI = 'sixhats_gemini_key';
+const KEY_STORAGE_ANTHROPIC = 'sixhats_anthropic_key';
+const KEY_STORAGE_ELEVENLABS = 'sixhats_elevenlabs_key';
+const VOICE_ENGINE_STORAGE = 'sixhats_voice_engine';
+const MANUAL_VOICE_MAP_STORAGE = 'sixhats_manual_voice_map';
+let currentProvider = 'claude-direct';  // 'claude-direct' | 'gemini' | 'anthropic' | 'manual'
+let currentDepth = 'deep';              // 'concise' | 'standard' | 'deep' | 'exhaustive'
+const keys = { gemini: '', anthropic: '', elevenlabs: '' };
+const verified = { gemini: false, anthropic: false, elevenlabs: false };
+let voiceEngine = 'browser';   // 'browser' | 'elevenlabs'
+
+const attachedFiles = [];
+const hatResults = {};
+let isRecording = false;
+let recognition = null;
+let baselineSpeech = '';
+let playSequenceActive = false;
+
+/* =====================================================================
+   DOM
+   ===================================================================== */
+const statusDot = document.getElementById('status-dot');
+const statusText = document.getElementById('status-text');
+const setupToggle = document.getElementById('setup-toggle');
+const setupBody = document.getElementById('setup-body');
+const hatsGrid = document.getElementById('hats-grid');
+const stageMeta = document.getElementById('stage-meta');
+const playAllBtn = document.getElementById('play-all-btn');
+const stopAllBtn = document.getElementById('stop-all-btn');
+const fileInput = document.getElementById('file-input');
+const fileBtn = document.getElementById('file-btn');
+const attachedFilesEl = document.getElementById('attached-files');
+const micBtn = document.getElementById('mic-btn');
+const voiceStatus = document.getElementById('voice-status');
+const topicInput = document.getElementById('topic-input');
+const runBtn = document.getElementById('run-btn');
+const promptOutput = document.getElementById('prompt-output');
+const promptBody = document.getElementById('prompt-body');
+const promptStats = document.getElementById('prompt-stats');
+const copyBtn = document.getElementById('copy-btn');
+const responseInput = document.getElementById('response-input');
+const parseBtn = document.getElementById('parse-btn');
+const responseStep = document.getElementById('response-step');
+
+/* =====================================================================
+   STATUS
+   ===================================================================== */
+function setStatus(state, msg) {
+  statusDot.className = 'status-dot' + (state ? ' ' + state : '');
+  statusText.textContent = msg;
+}
+
+function updateStatusForProvider() {
+  if (currentProvider === 'claude-direct') {
+    setStatus('ok', '✓ No key needed — opens Claude.ai in a new tab');
+    return;
+  }
+  if (currentProvider === 'manual') {
+    setStatus('ok', 'Manual mode — works with any LLM');
+    return;
+  }
+  if (currentProvider === 'gemini') {
+    if (verified.gemini) setStatus('ok', '✓ Gemini key works — one-button mode active');
+    else if (keys.gemini) setStatus('', 'Gemini key saved — click "Save & test" to verify');
+    else setStatus('', 'Add a free Gemini key (60 seconds) — see instructions above');
+    return;
+  }
+  if (currentProvider === 'anthropic') {
+    if (verified.anthropic) setStatus('ok', '✓ Anthropic key works — one-button mode active');
+    else if (keys.anthropic) setStatus('', 'Anthropic key saved — click "Save & test" to verify');
+    else setStatus('', 'Paste an Anthropic API key, or switch to Gemini (free)');
+  }
+}
+
+setupToggle.addEventListener('click', () => {
+  setupBody.classList.toggle('collapsed');
+  setupToggle.textContent = setupBody.classList.contains('collapsed') ? 'Show' : 'Hide';
+});
+
+/* =====================================================================
+   KEY MANAGEMENT
+   ===================================================================== */
+function loadKeys() {
+  try {
+    keys.gemini = localStorage.getItem(KEY_STORAGE_GEMINI) || '';
+    keys.anthropic = localStorage.getItem(KEY_STORAGE_ANTHROPIC) || '';
+    keys.elevenlabs = localStorage.getItem(KEY_STORAGE_ELEVENLABS) || '';
+    voiceEngine = localStorage.getItem(VOICE_ENGINE_STORAGE) || 'browser';
+    // Load manual voice map (hatKey → voice_id)
+    const rawMap = localStorage.getItem(MANUAL_VOICE_MAP_STORAGE);
+    if (rawMap) {
+      try {
+        const map = JSON.parse(rawMap);
+        HATS.forEach(h => {
+          if (map[h.key]) h.voice.elevenLabsVoiceId = map[h.key];
+        });
+      } catch (e) {}
+    }
+  } catch (e) {}
+  if (keys.gemini) document.getElementById('gemini-key').value = keys.gemini;
+  if (keys.anthropic) document.getElementById('anthropic-key').value = keys.anthropic;
+  const elKeyInput = document.getElementById('elevenlabs-key');
+  if (elKeyInput && keys.elevenlabs) elKeyInput.value = keys.elevenlabs;
+  // Sync voice-engine radio + show/hide key block
+  const radio = document.querySelector('input[name="voice-engine"][value="' + voiceEngine + '"]');
+  if (radio) radio.checked = true;
+  const keyBlock = document.getElementById('elevenlabs-key-block');
+  if (keyBlock) keyBlock.style.display = (voiceEngine === 'elevenlabs') ? 'block' : 'none';
+}
+
+/* Render the manual voice-mapping grid — one input per hat */
+function renderManualVoiceMap() {
+  const grid = document.getElementById('manual-voice-map-grid');
+  if (!grid) return;
+  grid.innerHTML = HATS.map(h => {
+    const current = h.voice.elevenLabsVoiceId || '';
+    const colorDot = HAT_COLOR_VALUES[h.color] || '#888';
+    return '<div style="display: flex; flex-direction: column; gap: 4px;">' +
+      '<label style="font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3); display: flex; align-items: center; gap: 6px; font-weight: 500;">' +
+        '<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ' + colorDot + ';"></span>' +
+        h.label + ' · ' + h.character +
+      '</label>' +
+      '<input type="text" class="manual-voice-id-input" data-hat="' + h.key + '" value="' + escapeHtml(current) + '" placeholder="voice_id (paste from ElevenLabs)" ' +
+        'style="padding: 8px 10px; border: 1px solid var(--rule); background: var(--surface); font-family: var(--mono); font-size: 11px; color: var(--ink); border-radius: 4px;" />' +
+    '</div>';
+  }).join('');
+}
+
+async function testGeminiKey(key) {
+  if (!key || !key.startsWith('AIzaSy')) {
+    setStatus('err', 'Gemini key should start with "AIzaSy"');
+    return false;
+  }
+  setStatus('', '⏳ Testing Gemini key…');
+  try {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(key);
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: 'Reply with the single word: READY' }] }],
+        generationConfig: { maxOutputTokens: 20 }
+      })
+    });
+    if (!r.ok) {
+      const txt = await r.text();
+      let msg = 'Gemini API ' + r.status;
+      try {
+        const j = JSON.parse(txt);
+        if (j.error && j.error.message) msg = j.error.message;
+      } catch (e) {}
+      setStatus('err', '✗ ' + msg);
+      return false;
+    }
+    setStatus('ok', '✓ Gemini key works — one-button mode active');
+    return true;
+  } catch (e) {
+    setStatus('err', '✗ Network failure: ' + e.message);
+    return false;
+  }
+}
+
+async function testAnthropicKey(key) {
+  if (!key || !key.startsWith('sk-ant-')) {
+    setStatus('err', 'Anthropic key should start with "sk-ant-"');
+    return false;
+  }
+  setStatus('', '⏳ Testing Anthropic key…');
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-3-5-haiku-latest',
+        max_tokens: 20,
+        messages: [{ role: 'user', content: 'Reply with: READY' }]
+      })
+    });
+    if (!r.ok) {
+      const txt = await r.text();
+      let msg = 'Anthropic API ' + r.status;
+      try { const j = JSON.parse(txt); if (j.error && j.error.message) msg = j.error.message; } catch (e) {}
+      setStatus('err', '✗ ' + msg);
+      return false;
+    }
+    setStatus('ok', '✓ Anthropic key works — one-button mode active');
+    return true;
+  } catch (e) {
+    setStatus('err', '✗ Network failure: ' + e.message);
+    return false;
+  }
+}
+
+document.getElementById('gemini-save').addEventListener('click', async () => {
+  const k = document.getElementById('gemini-key').value.trim();
+  if (!k) { setStatus('err', 'Paste a Gemini key first'); return; }
+  const btn = document.getElementById('gemini-save');
+  btn.disabled = true;
+  const ok = await testGeminiKey(k);
+  btn.disabled = false;
+  if (ok) {
+    keys.gemini = k;
+    verified.gemini = true;
+    try { localStorage.setItem(KEY_STORAGE_GEMINI, k); } catch (e) {}
+  } else {
+    verified.gemini = false;
+  }
+});
+document.getElementById('gemini-clear').addEventListener('click', () => {
+  try { localStorage.removeItem(KEY_STORAGE_GEMINI); } catch (e) {}
+  keys.gemini = ''; verified.gemini = false;
+  document.getElementById('gemini-key').value = '';
+  updateStatusForProvider();
+});
+
+document.getElementById('anthropic-save').addEventListener('click', async () => {
+  const k = document.getElementById('anthropic-key').value.trim();
+  if (!k) { setStatus('err', 'Paste an Anthropic key first'); return; }
+  const btn = document.getElementById('anthropic-save');
+  btn.disabled = true;
+  const ok = await testAnthropicKey(k);
+  btn.disabled = false;
+  if (ok) {
+    keys.anthropic = k;
+    verified.anthropic = true;
+    try { localStorage.setItem(KEY_STORAGE_ANTHROPIC, k); } catch (e) {}
+  } else {
+    verified.anthropic = false;
+  }
+});
+document.getElementById('anthropic-clear').addEventListener('click', () => {
+  try { localStorage.removeItem(KEY_STORAGE_ANTHROPIC); } catch (e) {}
+  keys.anthropic = ''; verified.anthropic = false;
+  document.getElementById('anthropic-key').value = '';
+  updateStatusForProvider();
+});
+
+/* ===== ElevenLabs key handling ===== */
+/* Cache of the user's available voices (populated after key is verified).
+   We can't rely on hardcoded "library" voice IDs because free-tier accounts
+   can't use them via API — ElevenLabs restricts library voices to paid plans.
+   Instead we discover what voices the account actually has and map each hat
+   to the best-fitting one. */
+let elevenLabsVoices = null;  // array of {voice_id, name, labels, ...}
+
+async function fetchElevenLabsVoices(key) {
+  try {
+    const r = await fetch('https://api.elevenlabs.io/v1/voices', {
+      method: 'GET',
+      headers: { 'xi-api-key': key, 'Accept': 'application/json' }
+    });
+    if (!r.ok) return null;
+    const j = await r.json();
+    return (j && j.voices) ? j.voices : null;
+  } catch (e) { return null; }
+}
+
+async function testElevenLabsKey(key) {
+  // Strategy: list the account's available voices. If we can list them, the key works
+  // and we have something we can speak with. This is FREE — no credits consumed,
+  // works on free tier, and tells us exactly which voices we can map the hats to.
+  if (!key) return { ok: false, error: 'empty key' };
+  try {
+    const r = await fetch('https://api.elevenlabs.io/v1/voices', {
+      method: 'GET',
+      headers: { 'xi-api-key': key, 'Accept': 'application/json' }
+    });
+    if (r.ok) {
+      const j = await r.json();
+      const voices = (j && j.voices) || [];
+      if (voices.length === 0) {
+        return { ok: false, error: 'Your account has no available voices. Visit the ElevenLabs voice library in your dashboard and add at least one voice to "My Voices".' };
+      }
+      elevenLabsVoices = voices;
+      assignVoicesToHats(voices);
+      return { ok: true, voiceCount: voices.length };
+    }
+    // Surface real error
+    let detail = 'HTTP ' + r.status + ' ' + r.statusText;
+    try {
+      const txt = await r.text();
+      try {
+        const j = JSON.parse(txt);
+        if (j.detail) {
+          if (typeof j.detail === 'string') detail = j.detail;
+          else if (j.detail.message) detail = j.detail.message;
+          else if (j.detail.status) detail = j.detail.status;
+          else detail = JSON.stringify(j.detail);
+        } else if (j.message) {
+          detail = j.message;
+        }
+      } catch (e) {
+        if (txt && txt.length < 200) detail = txt;
+      }
+    } catch (e) {}
+    return { ok: false, status: r.status, error: detail };
+  } catch (e) {
+    return { ok: false, error: 'Network error: ' + e.message };
+  }
+}
+
+/* Assign each hat the best-matching voice from what the account actually has.
+   Heuristics: gender match (from voice labels or name), accent if available,
+   and the per-hat preferred-name list. Falls back gracefully if no good match. */
+function assignVoicesToHats(voices) {
+  // Build per-voice signals
+  const scored = voices.map(v => {
+    const name = (v.name || '').toLowerCase();
+    const labels = v.labels || {};
+    const gender = (labels.gender || '').toLowerCase();           // 'male'|'female'|''
+    const accent = (labels.accent || labels.accent_strength || '').toLowerCase();
+    const age = (labels.age || '').toLowerCase();                 // 'young'|'middle aged'|'old'
+    const desc = (labels.description || labels.descriptive || '').toLowerCase();  // 'calm','soft','energetic'
+    return { voice: v, name, gender, accent, age, desc };
+  });
+
+  HATS.forEach(hat => {
+    const pref = hat.voice;
+    const wantGender = (pref.gender || '').toLowerCase();
+    const preferredNames = (pref.preferredNames || []).map(s => s.toLowerCase());
+
+    const ranked = scored.map(s => {
+      let score = 0;
+      // Strong preference: name match against the hat's preferred list
+      const nameIdx = preferredNames.findIndex(p => s.name.includes(p));
+      if (nameIdx === 0) score += 200;
+      else if (nameIdx === 1) score += 140;
+      else if (nameIdx === 2) score += 90;
+      else if (nameIdx >= 0) score += 50;
+
+      // Gender match (when ElevenLabs labels it)
+      if (wantGender && s.gender === wantGender) score += 60;
+      else if (wantGender && s.gender && s.gender !== wantGender) score -= 80;
+
+      // Description match for character traits
+      if (hat.key === 'red'   && /(warm|soft|emotional|expressive)/.test(s.desc)) score += 30;
+      if (hat.key === 'black' && /(deep|crisp|authoritative|serious|gravelly|old)/.test(s.desc + ' ' + s.age)) score += 30;
+      if (hat.key === 'yellow'&& /(confident|energetic|bright|warm)/.test(s.desc)) score += 30;
+      if (hat.key === 'green' && /(young|playful|expressive|energetic)/.test(s.desc + ' ' + s.age)) score += 30;
+      if (hat.key === 'blue'  && /(calm|deep|narrator|authoritative)/.test(s.desc)) score += 30;
+      if (hat.key === 'white' && /(calm|neutral|narrator|professional)/.test(s.desc)) score += 30;
+
+      // Slight tiebreaker: prefer 'premade' (default account voices, free-tier friendly)
+      if (s.voice.category === 'premade' || s.voice.category === 'professional') score += 10;
+      return { v: s.voice, score };
+    });
+
+    ranked.sort((a, b) => b.score - a.score);
+    // Use top scorer's voice ID. Always at least one voice exists if we reached here.
+    hat.voice.elevenLabsVoiceId = ranked[0].v.voice_id;
+    hat.voice.elevenLabsVoiceName = ranked[0].v.name;
+  });
+
+  // Ensure no two hats share the same voice if possible — round-robin uniqueness pass
+  const usedIds = new Set();
+  HATS.forEach((hat, idx) => {
+    if (!usedIds.has(hat.voice.elevenLabsVoiceId)) {
+      usedIds.add(hat.voice.elevenLabsVoiceId);
+      return;
+    }
+    // Find the next-best voice that hasn't been used
+    const pref = hat.voice;
+    const wantGender = (pref.gender || '').toLowerCase();
+    const preferredNames = (pref.preferredNames || []).map(s => s.toLowerCase());
+    const ranked = scored.map(s => {
+      let score = 0;
+      const nameIdx = preferredNames.findIndex(p => s.name.includes(p));
+      if (nameIdx >= 0) score += 100 - nameIdx * 20;
+      if (wantGender && s.gender === wantGender) score += 60;
+      else if (wantGender && s.gender && s.gender !== wantGender) score -= 80;
+      if (s.voice.category === 'premade' || s.voice.category === 'professional') score += 10;
+      return { v: s.voice, score };
+    }).filter(r => !usedIds.has(r.v.voice_id));
+    if (ranked.length === 0) return;  // no unique voice available; keep duplicate
+    ranked.sort((a, b) => b.score - a.score);
+    hat.voice.elevenLabsVoiceId = ranked[0].v.voice_id;
+    hat.voice.elevenLabsVoiceName = ranked[0].v.name;
+    usedIds.add(ranked[0].v.voice_id);
+  });
+
+  // Log to console so the user can see what got mapped
+  if (window.console) {
+    console.log('ElevenLabs voice mapping for the six hats:');
+    HATS.forEach(h => console.log('  ' + h.label + ' (' + h.character + '): ' + h.voice.elevenLabsVoiceName + ' [' + h.voice.elevenLabsVoiceId + ']'));
+  }
+}
+
+const elSave = document.getElementById('elevenlabs-save');
+if (elSave) {
+  elSave.addEventListener('click', async () => {
+    const k = document.getElementById('elevenlabs-key').value.trim();
+    if (!k) { alert('Paste an ElevenLabs key first'); return; }
+    elSave.disabled = true;
+    elSave.textContent = 'Testing…';
+    const result = await testElevenLabsKey(k);
+    elSave.disabled = false;
+    elSave.textContent = 'Save & test';
+    if (result.ok) {
+      keys.elevenlabs = k;
+      verified.elevenlabs = true;
+      try { localStorage.setItem(KEY_STORAGE_ELEVENLABS, k); } catch (e) {}
+      const vc = result.voiceCount || 0;
+      elSave.textContent = '✓ Saved · ' + vc + ' voices';
+      setTimeout(() => { elSave.textContent = 'Save & test'; }, 3000);
+      // Hide the manual mapper since auto-discovery worked
+      const mm = document.getElementById('manual-voice-map');
+      if (mm) mm.style.display = 'none';
+    } else if (result.status === 401 && /voices_read/i.test(result.error || '')) {
+      // Special case: key works for TTS but lacks voices_read.
+      // Save the key (it's still useful) and show the manual mapper.
+      keys.elevenlabs = k;
+      verified.elevenlabs = true;   // optimistic — we'll verify on actual TTS calls
+      try { localStorage.setItem(KEY_STORAGE_ELEVENLABS, k); } catch (e) {}
+      elSave.textContent = '⚠ Saved · manual mapping required';
+      setTimeout(() => { elSave.textContent = 'Save & test'; }, 4000);
+      const mm = document.getElementById('manual-voice-map');
+      if (mm) {
+        renderManualVoiceMap();
+        mm.style.display = 'block';
+        setTimeout(() => mm.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+      }
+      alert('Your key is valid but lacks the "Voices (read)" scope.\n\n' +
+            'Two options:\n\n' +
+            '1) RECOMMENDED — regenerate the key at elevenlabs.io with BOTH "Text to Speech" AND "Voices" (read) scopes checked, then paste the new key here. The app will auto-discover voices.\n\n' +
+            '2) WORKAROUND — paste voice IDs manually below. Open elevenlabs.io → My Voices → click any voice → ⋯ → Copy voice ID. Paste one into each hat\'s box.');
+    } else {
+      // Surface the actual error message from ElevenLabs
+      let userMsg = 'ElevenLabs key test failed.\n\n';
+      if (result.status === 401) {
+        userMsg += 'Status 401 (Unauthorized): the key is rejected. Likely causes:\n' +
+                   '• The key is invalid or was revoked\n' +
+                   '• The key was copied with extra spaces — try retyping it\n' +
+                   '• Your account is suspended\n\n' +
+                   'Reported by ElevenLabs: ' + (result.error || 'no detail');
+      } else if (result.status === 402) {
+        userMsg += 'Status 402 (Payment Required): your free tier can\'t access this resource.\n\n' +
+                   'This usually means the API tried to use a paid-only "library" voice. The app should now use only voices in your account\'s "My Voices" list — if you still see this error after saving the key, your account may have zero voices configured.\n\n' +
+                   'Fix: go to elevenlabs.io → Voices → Voice Library, and add any free voice (e.g. Rachel, Adam) to "My Voices". Then click Save & test again.\n\n' +
+                   'Reported by ElevenLabs: ' + (result.error || 'no detail');
+      } else if (result.status === 403) {
+        userMsg += 'Status 403 (Forbidden): the key lacks permission.\n' +
+                   'If you created a scoped key, make sure it has access to /v1/voices and /v1/text-to-speech.\n\n' +
+                   'Reported by ElevenLabs: ' + (result.error || 'no detail');
+      } else if (result.status === 429) {
+        userMsg += 'Status 429 (Quota Exceeded): your free-tier credits are used up for this month.\n\n' +
+                   'Reported by ElevenLabs: ' + (result.error || 'no detail');
+      } else if (result.status) {
+        userMsg += 'Status ' + result.status + '.\n' + (result.error || 'no detail');
+      } else {
+        userMsg += result.error || 'Unknown error';
+      }
+      alert(userMsg);
+      verified.elevenlabs = false;
+    }
+  });
+}
+const elClear = document.getElementById('elevenlabs-clear');
+if (elClear) {
+  elClear.addEventListener('click', () => {
+    try { localStorage.removeItem(KEY_STORAGE_ELEVENLABS); } catch (e) {}
+    keys.elevenlabs = ''; verified.elevenlabs = false;
+    document.getElementById('elevenlabs-key').value = '';
+  });
+}
+
+/* ===== Manual voice-ID mapping (fallback when voices_read is missing) ===== */
+const manualSaveBtn = document.getElementById('manual-voice-save');
+if (manualSaveBtn) {
+  manualSaveBtn.addEventListener('click', () => {
+    const inputs = document.querySelectorAll('.manual-voice-id-input');
+    const map = {};
+    let assigned = 0;
+    inputs.forEach(inp => {
+      const hatKey = inp.dataset.hat;
+      const vid = inp.value.trim();
+      const hat = HATS.find(h => h.key === hatKey);
+      if (vid) {
+        map[hatKey] = vid;
+        if (hat) hat.voice.elevenLabsVoiceId = vid;
+        assigned++;
+      } else {
+        if (hat) hat.voice.elevenLabsVoiceId = null;
+      }
+    });
+    try { localStorage.setItem(MANUAL_VOICE_MAP_STORAGE, JSON.stringify(map)); } catch (e) {}
+    manualSaveBtn.textContent = '✓ Saved · ' + assigned + ' of 6';
+    setTimeout(() => { manualSaveBtn.textContent = 'Save voice mapping'; }, 2500);
+  });
+}
+
+const manualTestBtn = document.getElementById('manual-voice-test');
+if (manualTestBtn) {
+  manualTestBtn.addEventListener('click', async () => {
+    // First save what's in the inputs, then test the Black hat voice with a short sentence
+    if (manualSaveBtn) manualSaveBtn.click();
+    const blackHat = HATS.find(h => h.key === 'black');
+    if (!blackHat || !blackHat.voice.elevenLabsVoiceId) {
+      alert('Paste a voice ID for the Black hat first, then click test.');
+      return;
+    }
+    manualTestBtn.disabled = true;
+    manualTestBtn.textContent = 'Testing…';
+    try {
+      const url = 'https://api.elevenlabs.io/v1/text-to-speech/' + blackHat.voice.elevenLabsVoiceId + '?output_format=mp3_44100_128';
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'xi-api-key': keys.elevenlabs,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: 'The risk is real, and we must look carefully at what could go wrong.',
+          model_id: 'eleven_turbo_v2_5',
+          voice_settings: {
+            stability: blackHat.voice.stability != null ? blackHat.voice.stability : 0.65,
+            similarity_boost: blackHat.voice.similarityBoost != null ? blackHat.voice.similarityBoost : 0.80,
+            style: blackHat.voice.style != null ? blackHat.voice.style : 0.25
+          }
+        })
+      });
+      if (!r.ok) {
+        let detail = 'HTTP ' + r.status;
+        try { const j = await r.json(); if (j.detail && j.detail.message) detail = j.detail.message; } catch (e) {}
+        alert('Voice test failed: ' + detail);
+      } else {
+        const blob = await r.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        audio.onended = () => URL.revokeObjectURL(audioUrl);
+        audio.play();
+      }
+    } catch (e) {
+      alert('Voice test failed: ' + e.message);
+    } finally {
+      manualTestBtn.disabled = false;
+      manualTestBtn.textContent = 'Test ⚫ Black hat';
+    }
+  });
+}
+
+/* ===== Voice engine radio ===== */
+document.querySelectorAll('input[name="voice-engine"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    if (!radio.checked) return;
+    voiceEngine = radio.value;
+    try { localStorage.setItem(VOICE_ENGINE_STORAGE, voiceEngine); } catch (e) {}
+    const keyBlock = document.getElementById('elevenlabs-key-block');
+    if (keyBlock) keyBlock.style.display = (voiceEngine === 'elevenlabs') ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('.provider-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentProvider = tab.dataset.provider;
+    document.querySelectorAll('.provider-tab').forEach(t => t.classList.toggle('active', t === tab));
+    document.querySelectorAll('.provider-content').forEach(c => c.classList.toggle('active', c.id === 'provider-' + currentProvider));
+    // Both claude-direct and manual need the response paste area
+    const needsPaste = (currentProvider === 'manual' || currentProvider === 'claude-direct');
+    responseStep.style.display = needsPaste ? 'block' : 'none';
+    promptOutput.classList.remove('visible');
+    // Hide the Open Claude button when switching away from claude-direct
+    const openBtn = document.getElementById('open-claude-btn');
+    if (openBtn) openBtn.style.display = 'none';
+    let label = 'Run the six hats';
+    if (currentProvider === 'manual') label = 'Generate the prompt';
+    else if (currentProvider === 'claude-direct') label = 'Generate the prompt';
+    document.getElementById('run-btn-label').textContent = label;
+    updateStatusForProvider();
+  });
+});
+
+/* Depth selector — segmented control */
+document.querySelectorAll('.depth-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    currentDepth = opt.dataset.depth;
+    document.querySelectorAll('.depth-option').forEach(o => {
+      const active = (o === opt);
+      o.classList.toggle('active', active);
+      o.setAttribute('aria-checked', active ? 'true' : 'false');
+    });
+  });
+});
+
+/* =====================================================================
+   FILE HANDLING (text only — keeps payload small)
+   ===================================================================== */
+fileBtn.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  fileBtn.disabled = true;
+  for (const file of files) {
+    try { await processFile(file); }
+    catch (err) {
+      attachedFiles.push({ id: Math.random().toString(36).slice(2), name: file.name, size: file.size, kind: 'error', error: err.message });
+      renderAttachments();
+    }
+  }
+  fileInput.value = '';
+  fileBtn.disabled = false;
+});
+
+async function processFile(file) {
+  const name = file.name || 'file';
+  const ext = (name.toLowerCase().split('.').pop() || '');
+  const type = (file.type || '').toLowerCase();
+  const sizeMB = file.size / (1024 * 1024);
+  if (sizeMB > 20) throw new Error('Too large (' + sizeMB.toFixed(1) + 'MB · max 20MB)');
+
+  const id = Math.random().toString(36).slice(2);
+  const tempEntry = { id, name, size: file.size, kind: 'processing', label: 'reading' };
+  attachedFiles.push(tempEntry);
+  renderAttachments();
+
+  try {
+    if (type.startsWith('image/')) {
+      throw new Error('Images not supported here — paste a description into the topic box.');
+    }
+    // DOCX — native ZIP + XML
+    if (ext === 'docx') {
+      tempEntry.label = 'parsing docx';
+      renderAttachments();
+      const text = await extractDocxText(file);
+      if (!text.trim()) throw new Error('No text in .docx');
+      replaceEntry(id, { id, name, size: file.size, kind: 'text', text, ext: 'docx' });
+      return;
+    }
+    // PPTX — native ZIP + XML (loops through all slides)
+    if (ext === 'pptx') {
+      tempEntry.label = 'parsing pptx';
+      renderAttachments();
+      const text = await extractPptxText(file);
+      if (!text.trim()) throw new Error('No text found in .pptx');
+      replaceEntry(id, { id, name, size: file.size, kind: 'text', text, ext: 'pptx' });
+      return;
+    }
+    // PDF — lazy-load PDF.js from CDN, then extract text page by page
+    if (ext === 'pdf' || type === 'application/pdf') {
+      tempEntry.label = 'loading pdf reader';
+      renderAttachments();
+      const pdfLib = await ensurePdfJs();
+      if (!pdfLib) {
+        throw new Error('PDF reader could not be loaded (network blocked CDN). Workaround: open the PDF, select all, copy, and paste the text into the topic box above.');
+      }
+      tempEntry.label = 'extracting pdf';
+      renderAttachments();
+      const text = await extractPdfText(pdfLib, file);
+      if (!text.trim()) {
+        throw new Error('No selectable text found — this PDF may be scanned/image-only. Workaround: paste the text manually into the topic box.');
+      }
+      replaceEntry(id, { id, name, size: file.size, kind: 'text', text, ext: 'pdf' });
+      return;
+    }
+    // Anything else — try as text
+    tempEntry.label = 'reading text';
+    renderAttachments();
+    let text;
+    try { text = await file.text(); }
+    catch (e) { throw new Error('Cannot read: ' + e.message); }
+    const nulRatio = (text.match(/\0/g) || []).length / Math.max(text.length, 1);
+    if (nulRatio > 0.01) throw new Error('Binary file detected — supported binary formats are .docx, .pptx, .pdf');
+    if (!text.trim()) throw new Error('File empty');
+    replaceEntry(id, { id, name, size: file.size, kind: 'text', text, ext: ext || 'text' });
+  } catch (err) {
+    const idx = attachedFiles.findIndex(a => a.id === id);
+    if (idx !== -1) attachedFiles.splice(idx, 1);
+    renderAttachments();
+    throw err;
+  }
+}
+
+function replaceEntry(id, finalEntry) {
+  const idx = attachedFiles.findIndex(a => a.id === id);
+  if (idx !== -1) attachedFiles[idx] = finalEntry;
+  renderAttachments();
+}
+
+async function extractDocxText(file) {
+  const buffer = await file.arrayBuffer();
+  const entries = await readZipEntries(buffer);
+  const docEntry = entries.find(e => e.name === 'word/document.xml');
+  if (!docEntry) throw new Error('Missing word/document.xml');
+  const xmlBytes = await inflateEntry(docEntry);
+  const xmlText = new TextDecoder('utf-8').decode(xmlBytes);
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+  if (xmlDoc.querySelector('parsererror')) throw new Error('XML parse error');
+  const ns = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
+  const pList = xmlDoc.getElementsByTagNameNS(ns, 'p');
+  const paragraphs = [];
+  for (let i = 0; i < pList.length; i++) {
+    let buf = '';
+    const walk = (node) => {
+      for (const child of node.childNodes) {
+        if (child.nodeType === 1) {
+          const ln = child.localName;
+          if (ln === 't') buf += child.textContent || '';
+          else if (ln === 'tab') buf += '\t';
+          else if (ln === 'br') buf += '\n';
+          else walk(child);
+        }
+      }
+    };
+    walk(pList[i]);
+    paragraphs.push(buf);
+  }
+  return paragraphs.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+async function readZipEntries(arrayBuffer) {
+  const bytes = new Uint8Array(arrayBuffer);
+  const view = new DataView(arrayBuffer);
+  let eocdOffset = -1;
+  const maxScan = Math.min(bytes.length, 65557);
+  for (let i = bytes.length - 22; i >= bytes.length - maxScan && i >= 0; i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+  }
+  if (eocdOffset === -1) throw new Error('Not a valid ZIP');
+  const cdEntries = view.getUint16(eocdOffset + 10, true);
+  const cdOffset = view.getUint32(eocdOffset + 16, true);
+  const entries = [];
+  let p = cdOffset;
+  for (let i = 0; i < cdEntries; i++) {
+    if (view.getUint32(p, true) !== 0x02014b50) throw new Error('Corrupt CD');
+    const compMethod = view.getUint16(p + 10, true);
+    const compSize = view.getUint32(p + 20, true);
+    const nameLen = view.getUint16(p + 28, true);
+    const extraLen = view.getUint16(p + 30, true);
+    const commentLen = view.getUint16(p + 32, true);
+    const localHeaderOffset = view.getUint32(p + 42, true);
+    const name = new TextDecoder('utf-8').decode(bytes.subarray(p + 46, p + 46 + nameLen));
+    entries.push({ name, compMethod, compSize, localHeaderOffset, bytes, view });
+    p += 46 + nameLen + extraLen + commentLen;
+  }
+  return entries;
+}
+async function inflateEntry(entry) {
+  const { bytes, view, localHeaderOffset, compMethod, compSize } = entry;
+  if (view.getUint32(localHeaderOffset, true) !== 0x04034b50) throw new Error('Corrupt local header');
+  const nameLen = view.getUint16(localHeaderOffset + 26, true);
+  const extraLen = view.getUint16(localHeaderOffset + 28, true);
+  const dataStart = localHeaderOffset + 30 + nameLen + extraLen;
+  const compressed = bytes.subarray(dataStart, dataStart + compSize);
+  if (compMethod === 0) return compressed;
+  if (compMethod === 8) {
+    if (typeof DecompressionStream === 'undefined') throw new Error('No DecompressionStream');
+    const stream = new Response(compressed).body.pipeThrough(new DecompressionStream('deflate-raw'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+  throw new Error('Unsupported compression: ' + compMethod);
+}
+
+/* ---------- PPTX text extraction — native, no library ----------
+   A .pptx is a ZIP with each slide as ppt/slides/slideN.xml.
+   Inside each slide XML, text lives in <a:t> elements.
+   Also pull speaker notes from ppt/notesSlides/notesSlideN.xml when present. */
+async function extractPptxText(file) {
+  const buffer = await file.arrayBuffer();
+  const entries = await readZipEntries(buffer);
+
+  // Find slide files and sort them numerically (slide1.xml, slide2.xml, …, slide10.xml)
+  const slideEntries = entries
+    .filter(e => /^ppt\/slides\/slide\d+\.xml$/i.test(e.name))
+    .sort((a, b) => {
+      const na = parseInt(a.name.match(/(\d+)/)[1], 10);
+      const nb = parseInt(b.name.match(/(\d+)/)[1], 10);
+      return na - nb;
+    });
+
+  const notesByNumber = {};
+  entries.filter(e => /^ppt\/notesSlides\/notesSlide\d+\.xml$/i.test(e.name)).forEach(e => {
+    const n = parseInt(e.name.match(/(\d+)/)[1], 10);
+    notesByNumber[n] = e;
+  });
+
+  if (slideEntries.length === 0) throw new Error('No slides found in .pptx');
+
+  const parser = new DOMParser();
+  const out = [];
+
+  for (let i = 0; i < slideEntries.length; i++) {
+    const entry = slideEntries[i];
+    const slideNum = parseInt(entry.name.match(/(\d+)/)[1], 10);
+    try {
+      const xmlBytes = await inflateEntry(entry);
+      const xmlText = new TextDecoder('utf-8').decode(xmlBytes);
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+      if (xmlDoc.querySelector('parsererror')) continue;
+
+      // DrawingML namespace — <a:t> elements contain the text
+      const ns = 'http://schemas.openxmlformats.org/drawingml/2006/main';
+      const tNodes = xmlDoc.getElementsByTagNameNS(ns, 't');
+
+      // Build per-paragraph text by walking shape > paragraph > run > text
+      const pNodes = xmlDoc.getElementsByTagNameNS(ns, 'p');
+      const slideParagraphs = [];
+      for (let j = 0; j < pNodes.length; j++) {
+        const pText = [];
+        const ts = pNodes[j].getElementsByTagNameNS(ns, 't');
+        for (let k = 0; k < ts.length; k++) {
+          pText.push(ts[k].textContent || '');
+        }
+        const joined = pText.join('').trim();
+        if (joined) slideParagraphs.push(joined);
+      }
+
+      // Fallback: if no paragraphs were found, just collect all <a:t> in order
+      if (slideParagraphs.length === 0 && tNodes.length > 0) {
+        for (let j = 0; j < tNodes.length; j++) {
+          const tx = (tNodes[j].textContent || '').trim();
+          if (tx) slideParagraphs.push(tx);
+        }
+      }
+
+      if (slideParagraphs.length === 0) continue;
+
+      out.push('--- Slide ' + slideNum + ' ---');
+      out.push(slideParagraphs.join('\n'));
+
+      // Speaker notes
+      const notesEntry = notesByNumber[slideNum];
+      if (notesEntry) {
+        try {
+          const nb = await inflateEntry(notesEntry);
+          const nx = new TextDecoder('utf-8').decode(nb);
+          const nd = parser.parseFromString(nx, 'application/xml');
+          if (!nd.querySelector('parsererror')) {
+            const nts = nd.getElementsByTagNameNS(ns, 't');
+            const noteText = [];
+            for (let j = 0; j < nts.length; j++) {
+              const tx = (nts[j].textContent || '').trim();
+              if (tx) noteText.push(tx);
+            }
+            const noteJoined = noteText.join(' ').trim();
+            if (noteJoined) out.push('  Notes: ' + noteJoined);
+          }
+        } catch (e) { /* skip notes on failure */ }
+      }
+      out.push('');
+    } catch (e) {
+      // Skip slides that fail to parse
+    }
+  }
+
+  return out.join('\n').trim();
+}
+
+/* ---------- PDF text extraction — lazy-load PDF.js from cdnjs ---------- */
+let pdfJsLib = null;
+let pdfJsLoadPromise = null;
+
+function ensurePdfJs() {
+  if (pdfJsLib) return Promise.resolve(pdfJsLib);
+  if (pdfJsLoadPromise) return pdfJsLoadPromise;
+  pdfJsLoadPromise = (async () => {
+    // Try cdnjs first (the cleanest CDN for browser apps)
+    const cdns = [
+      {
+        main: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+        worker: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+      },
+      {
+        main: 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js',
+        worker: 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+      },
+      {
+        main: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
+        worker: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+      }
+    ];
+    for (const cdn of cdns) {
+      try {
+        await loadScript(cdn.main);
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = cdn.worker;
+          pdfJsLib = window.pdfjsLib;
+          return pdfJsLib;
+        }
+      } catch (e) { /* try next */ }
+    }
+    return null;
+  })();
+  return pdfJsLoadPromise;
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('Script load failed: ' + src));
+    const t = setTimeout(() => reject(new Error('Script load timeout: ' + src)), 12000);
+    s.onload = () => { clearTimeout(t); resolve(); };
+    s.onerror = () => { clearTimeout(t); reject(new Error('Script load failed')); };
+    document.head.appendChild(s);
+  });
+}
+
+async function extractPdfText(pdfLib, file) {
+  const arrayBuffer = await file.arrayBuffer();
+  const loadingTask = pdfLib.getDocument({ data: arrayBuffer });
+  const pdf = await loadingTask.promise;
+  const pageCount = pdf.numPages;
+  const maxPages = Math.min(pageCount, 80);  // safety cap
+  const chunks = [];
+  for (let i = 1; i <= maxPages; i++) {
+    try {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items.map(it => it.str).join(' ').replace(/\s+/g, ' ').trim();
+      if (pageText) {
+        chunks.push('--- Page ' + i + ' ---');
+        chunks.push(pageText);
+        chunks.push('');
+      }
+    } catch (e) { /* skip page */ }
+  }
+  if (pageCount > maxPages) {
+    chunks.push('[Note: only the first ' + maxPages + ' of ' + pageCount + ' pages were extracted.]');
+  }
+  return chunks.join('\n').trim();
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function formatSize(b) {
+  if (b < 1024) return b + 'B';
+  if (b < 1024 * 1024) return (b / 1024).toFixed(0) + 'KB';
+  return (b / (1024 * 1024)).toFixed(1) + 'MB';
+}
+
+function renderAttachments() {
+  attachedFilesEl.innerHTML = attachedFiles.map(a => {
+    if (a.kind === 'processing') {
+      return '<div class="attached-pill processing">' +
+        '<div class="spinner-mini"></div>' +
+        '<span class="name">' + escapeHtml(a.name) + '</span>' +
+        '<span class="badge-mini">' + escapeHtml(a.label || '…') + '</span>' +
+      '</div>';
+    }
+    if (a.kind === 'error') {
+      return '<div class="attached-pill error">' +
+        '<span class="badge-mini">ERR</span>' +
+        '<span class="name" title="' + escapeHtml(a.error || '') + '">' + escapeHtml(a.name) + '</span>' +
+        '<button class="remove" data-id="' + a.id + '">×</button>' +
+      '</div>';
+    }
+    const label = a.text.length.toLocaleString() + ' chars';
+    return '<div class="attached-pill">' +
+      '<span class="badge-mini">' + escapeHtml((a.ext || 'text').toUpperCase()) + '</span>' +
+      '<span class="name">' + escapeHtml(a.name) + '</span>' +
+      '<span class="size">' + escapeHtml(label) + '</span>' +
+      '<button class="remove" data-id="' + a.id + '">×</button>' +
+    '</div>';
+  }).join('');
+  attachedFilesEl.querySelectorAll('.remove').forEach(b => {
+    b.addEventListener('click', () => {
+      const idx = attachedFiles.findIndex(a => a.id === b.dataset.id);
+      if (idx !== -1) attachedFiles.splice(idx, 1);
+      renderAttachments();
+    });
+  });
+}
+
+/* =====================================================================
+   MARKDOWN
+   ===================================================================== */
+function inlineFormat(text) {
+  text = escapeHtml(text);
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  return text;
+}
+function renderMarkdown(md) {
+  md = (md || '').trim();
+  const lines = md.split(/\n/);
+  let html = '', inList = false, listType = null, buf = [];
+  const flush = () => { if (buf.length) { html += '<p>' + inlineFormat(buf.join(' ').trim()) + '</p>'; buf = []; } };
+  const closeList = () => { if (inList) { html += listType === 'ol' ? '</ol>' : '</ul>'; inList = false; listType = null; } };
+  for (const raw of lines) {
+    const t = raw.replace(/\r/g, '').trim();
+    if (!t) { flush(); closeList(); continue; }
+    if (/^#+\s/.test(t)) { flush(); closeList(); continue; }
+    const ol = t.match(/^(\d+)[.)]\s+(.*)$/);
+    const ul = t.match(/^[-*•]\s+(.*)$/);
+    if (ol) {
+      flush();
+      if (!inList || listType !== 'ol') { closeList(); html += '<ol>'; inList = true; listType = 'ol'; }
+      html += '<li>' + inlineFormat(ol[2]) + '</li>';
+    } else if (ul) {
+      flush();
+      if (!inList || listType !== 'ul') { closeList(); html += '<ul>'; inList = true; listType = 'ul'; }
+      html += '<li>' + inlineFormat(ul[1]) + '</li>';
+    } else { closeList(); buf.push(t); }
+  }
+  flush(); closeList();
+  return html;
+}
+
+/* =====================================================================
+   VOICE INPUT
+   ===================================================================== */
+function initSpeechRecognition() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return null;
+  const r = new SR();
+  r.continuous = true; r.interimResults = true; r.lang = 'en-US';
+  r.onstart = () => {
+    baselineSpeech = topicInput.value;
+    if (baselineSpeech && !baselineSpeech.endsWith(' ') && !baselineSpeech.endsWith('\n')) baselineSpeech += ' ';
+  };
+  r.onresult = (event) => {
+    let interim = '', final = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const t = event.results[i][0].transcript;
+      if (event.results[i].isFinal) final += t + ' ';
+      else interim += t;
+    }
+    if (final) baselineSpeech += final;
+    topicInput.value = baselineSpeech + interim;
+  };
+  r.onerror = () => stopRecording();
+  r.onend = () => { if (isRecording) stopRecording(); };
+  return r;
+}
+function startRecording() {
+  if (!recognition) recognition = initSpeechRecognition();
+  if (!recognition) { alert('Speech recognition not supported. Use Chrome/Edge/Safari.'); return; }
+  try { recognition.start(); isRecording = true; micBtn.classList.add('recording'); voiceStatus.classList.add('active'); } catch (e) {}
+}
+function stopRecording() {
+  if (recognition && isRecording) { try { recognition.stop(); } catch (e) {} }
+  isRecording = false;
+  micBtn.classList.remove('recording');
+  voiceStatus.classList.remove('active');
+}
+micBtn.addEventListener('click', () => { if (isRecording) stopRecording(); else startRecording(); });
+
+/* =====================================================================
+   VOICE OUTPUT
+   ===================================================================== */
+function pickVoice(prefs) {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const accent = prefs.accent || 'en-US';
+  const lang = accent.split('-')[0];
+  const preferred = (prefs.preferredNames || []).map(s => s.toLowerCase());
+
+  // Voices known to sound bad or be too synthetic — strongly penalize
+  const badNames = ['whisper','bells','boing','bubbles','cellos','deranged','good news','bad news',
+                    'hysterical','organ','superstar','trinoids','zarvox','wobble','jester',
+                    'bahh','pipe organ','espeak','flo','grandpa','grandma','reed','rocko','shelley'];
+  // Voices known to sound natural — boost (Apple premium voices, Google Cloud, Microsoft Neural)
+  const goodNames = ['samantha','daniel','karen','tom','allison','ava','victoria','serena',
+                     'kate','susan','aaron','alex','arthur','oliver','jenny','aria','guy',
+                     'natural','neural','enhanced','premium','online'];
+
+  const scored = voices.map(v => {
+    let s = 0;
+    const n = (v.name || '').toLowerCase();
+
+    // Strong preference for the specific names this hat wants
+    const prefIdx = preferred.findIndex(p => n.includes(p));
+    if (prefIdx === 0) s += 300;       // exact first preference
+    else if (prefIdx === 1) s += 220;  // second choice
+    else if (prefIdx === 2) s += 160;
+    else if (prefIdx >= 0) s += 100;
+
+    // Accent / language match
+    if (v.lang === accent) s += 80;
+    else if (v.lang && v.lang.startsWith(lang)) s += 40;
+    else if (v.lang && v.lang.startsWith('en')) s += 15;
+    else s -= 100;  // non-english voices are bad for english content
+
+    // Naturalness signals
+    if (goodNames.some(g => n.includes(g))) s += 50;
+    if (badNames.some(b => n.includes(b))) s -= 200;
+
+    // Local (offline) voices on macOS/iOS tend to be premium
+    if (v.localService) s += 10;
+
+    // Gender match — softer signal, names already encode this for known voices
+    const femaleNames = ['samantha','victoria','karen','serena','tessa','fiona','moira','kate','susan','allison','ava','zira','hazel','aria','jenny','libby','sonia','grace','elsa','catherine','female'];
+    const maleNames   = ['daniel','alex','fred','tom','oliver','arthur','george','lee','mark','david','james','ryan','guy','aaron','jacob','reed','male'];
+    if (prefs.gender === 'female' && femaleNames.some(h => n.includes(h))) s += 25;
+    if (prefs.gender === 'male'   && maleNames.some(h => n.includes(h)))   s += 25;
+    if (prefs.gender === 'female' && maleNames.some(h => n.includes(h)))   s -= 30;
+    if (prefs.gender === 'male'   && femaleNames.some(h => n.includes(h))) s -= 30;
+
+    return { v, s };
+  });
+  scored.sort((a, b) => b.s - a.s);
+  return scored[0] && scored[0].v;
+}
+/* Strip markdown to plain text, then optionally re-shape punctuation per hat
+   to get natural prosody from the speech engine. */
+function markdownToSpeech(md, hatKey) {
+  let t = (md || '').trim();
+  // Strip markdown
+  t = t.replace(/\*\*([^*]+)\*\*/g, '$1').replace(/\*([^*]+)\*/g, '$1');
+  t = t.replace(/^\s*(\d+)[.)]\s+/gm, '$1. ').replace(/^\s*[-•]\s+/gm, '');
+  // Collapse paragraphs into sentence-final pauses
+  t = t.replace(/\n{2,}/g, '. ').replace(/\n/g, ' ').replace(/\s{2,}/g, ' ').trim();
+
+  // Per-hat shaping — Web Speech doesn't expose emotion control, so we use
+  // punctuation hints (commas, ellipses) to coax the engine into prosody that
+  // matches the character. Effects are subtle but cumulatively help.
+  if (hatKey === 'black') {
+    // Sentinel: slow, weighted. Add small pauses after introductory clauses,
+    // and lengthen sentence-final pauses so each point lands.
+    t = t.replace(/\bif\s+/gi, 'If, ');           // "if X" → "if, X" — slight pause
+    t = t.replace(/([.!?])\s+/g, '$1 ... ');       // longer beat between sentences
+    t = t.replace(/\bbut\b/gi, '... but');         // pause before counter-points
+  } else if (hatKey === 'red') {
+    // Pulse: feelings. Let it breathe — short pauses around emotional words.
+    t = t.replace(/\b(honestly|frankly|truly|really)\b/gi, '$1,');
+    t = t.replace(/\b(I feel|I sense|I am|I'm)\b/gi, '$1');  // (kept; no change)
+  } else if (hatKey === 'yellow') {
+    // Builder: confident. Slight emphasis on conditions.
+    t = t.replace(/\b(if|when|provided)\b/gi, '$1');  // (no change — already natural)
+    // Brighten the ends of sentences slightly (engine handles "!" with higher pitch)
+    // Don't overdo this — most engines treat "!" as actual exclamation. Skip.
+  } else if (hatKey === 'green') {
+    // Gardener: playful, varied. Use occasional "—" for thought-bursts.
+    t = t.replace(/\bwhat if\b/gi, 'What if,');     // mini pause after the provocation
+    t = t.replace(/\byes,\s*and\b/gi, 'Yes — and');
+  } else if (hatKey === 'blue') {
+    // Conductor: measured, even. Small pauses between sections.
+    t = t.replace(/([.!?])\s+/g, '$1 ');
+  }
+  // White / Archivist — no shaping; user likes it as-is.
+
+  return t.trim();
+}
+/* Currently-playing ElevenLabs audio element (so we can stop it) */
+let currentAudio = null;
+
+function speakHat(hatKey, onEnd) {
+  const md = hatResults[hatKey];
+  if (!md) { if (onEnd) onEnd(); return; }
+  const hat = HATS.find(h => h.key === hatKey);
+  if (!hat) { if (onEnd) onEnd(); return; }
+  // Stop any current speech (both engines)
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.src = ''; } catch (e) {}
+    currentAudio = null;
+  }
+  document.querySelectorAll('.speak-btn.speaking').forEach(b => b.classList.remove('speaking'));
+
+  // Decide which engine
+  const useEleven = (voiceEngine === 'elevenlabs' && keys.elevenlabs);
+  if (useEleven) {
+    speakHatElevenLabs(hat, md, onEnd);
+  } else {
+    speakHatBrowser(hat, md, onEnd);
+  }
+}
+
+function speakHatBrowser(hat, md, onEnd) {
+  if (!window.speechSynthesis) { if (onEnd) onEnd(); return; }
+  const utter = new SpeechSynthesisUtterance(markdownToSpeech(md, hat.key));
+  const v = pickVoice(hat.voice);
+  if (v) utter.voice = v;
+  utter.rate = hat.voice.rate;
+  utter.pitch = hat.voice.pitch;
+  utter.volume = 1.0;
+  const btn = document.querySelector('.speak-btn[data-hat="' + hat.key + '"]');
+  if (btn) btn.classList.add('speaking');
+  stopAllBtn.disabled = false;
+  utter.onend = () => { if (btn) btn.classList.remove('speaking'); if (!playSequenceActive) stopAllBtn.disabled = true; if (onEnd) onEnd(); };
+  utter.onerror = () => { if (btn) btn.classList.remove('speaking'); if (!playSequenceActive) stopAllBtn.disabled = true; if (onEnd) onEnd(); };
+  window.speechSynthesis.speak(utter);
+}
+
+async function speakHatElevenLabs(hat, md, onEnd) {
+  const btn = document.querySelector('.speak-btn[data-hat="' + hat.key + '"]');
+  if (btn) btn.classList.add('speaking');
+  stopAllBtn.disabled = false;
+
+  // For ElevenLabs we skip the per-hat punctuation hacks (the model does the prosody)
+  // and keep the natural markdown stripped to plain text.
+  const text = markdownToSpeech(md, null);
+  const v = hat.voice;
+  try {
+    const url = 'https://api.elevenlabs.io/v1/text-to-speech/' + v.elevenLabsVoiceId + '?output_format=mp3_44100_128';
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': keys.elevenlabs,
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
+      },
+      body: JSON.stringify({
+        text: text,
+        model_id: 'eleven_turbo_v2_5',  // fast, natural, supports v2.5
+        voice_settings: {
+          stability: v.stability != null ? v.stability : 0.5,
+          similarity_boost: v.similarityBoost != null ? v.similarityBoost : 0.75,
+          style: v.style != null ? v.style : 0.3,
+          use_speaker_boost: true
+        }
+      })
+    });
+    if (!r.ok) {
+      let msg = 'ElevenLabs ' + r.status;
+      try { const j = await r.json(); if (j.detail && j.detail.message) msg = j.detail.message; } catch (e) {}
+      if (btn) btn.classList.remove('speaking');
+      if (!playSequenceActive) stopAllBtn.disabled = true;
+      setStatus('err', '✗ ' + msg + ' — falling back to browser voice');
+      speakHatBrowser(hat, md, onEnd);
+      return;
+    }
+    const blob = await r.blob();
+    const audioUrl = URL.createObjectURL(blob);
+    const audio = new Audio(audioUrl);
+    currentAudio = audio;
+    audio.onended = () => {
+      if (btn) btn.classList.remove('speaking');
+      URL.revokeObjectURL(audioUrl);
+      if (currentAudio === audio) currentAudio = null;
+      if (!playSequenceActive) stopAllBtn.disabled = true;
+      if (onEnd) onEnd();
+    };
+    audio.onerror = () => {
+      if (btn) btn.classList.remove('speaking');
+      URL.revokeObjectURL(audioUrl);
+      if (currentAudio === audio) currentAudio = null;
+      if (!playSequenceActive) stopAllBtn.disabled = true;
+      if (onEnd) onEnd();
+    };
+    audio.play().catch(() => {
+      if (btn) btn.classList.remove('speaking');
+      if (!playSequenceActive) stopAllBtn.disabled = true;
+      if (onEnd) onEnd();
+    });
+  } catch (e) {
+    if (btn) btn.classList.remove('speaking');
+    if (!playSequenceActive) stopAllBtn.disabled = true;
+    setStatus('err', '✗ ElevenLabs failed — falling back to browser voice');
+    speakHatBrowser(hat, md, onEnd);
+  }
+}
+
+function stopSpeaking() {
+  playSequenceActive = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.src = ''; } catch (e) {}
+    currentAudio = null;
+  }
+  document.querySelectorAll('.speak-btn.speaking').forEach(b => b.classList.remove('speaking'));
+  stopAllBtn.disabled = true;
+}
+async function playAllSequence() {
+  playSequenceActive = true;
+  stopAllBtn.disabled = false;
+  for (const h of HATS) {
+    if (!playSequenceActive) break;
+    if (!hatResults[h.key]) continue;
+    await new Promise(resolve => speakHat(h.key, resolve));
+    await new Promise(r => setTimeout(r, 400));
+  }
+  playSequenceActive = false;
+  stopAllBtn.disabled = true;
+}
+playAllBtn.addEventListener('click', playAllSequence);
+stopAllBtn.addEventListener('click', stopSpeaking);
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+/* =====================================================================
+   HAT CARDS
+   ===================================================================== */
+const cardState = {};
+HATS.forEach(h => { cardState[h.key] = { kind: 'empty' }; });
+
+/* =====================================================================
+   HAT ICON — single SVG shape, color-customizable
+   A simple bowler-style hat: crown + brim.
+   ===================================================================== */
+function hatIconSvg(color, opts) {
+  opts = opts || {};
+  const w = opts.w || 84;
+  const h = opts.h || 60;
+  const stroke = opts.stroke || '#14130f';
+  const strokeWidth = opts.strokeWidth || 2;
+  // For black hat, fill is dark — use the stroke color subtly
+  // For white hat, fill is putty so it's visible on white
+  const fill = color;
+  return '<svg class="hat-icon-large" viewBox="0 0 84 60" xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" aria-hidden="true">' +
+    // Hat band (the line between crown and brim)
+    '<g fill="' + fill + '" stroke="' + stroke + '" stroke-width="' + strokeWidth + '" stroke-linejoin="round" stroke-linecap="round">' +
+      // Crown — rounded rectangle on top
+      '<path d="M22 38 C22 18, 28 8, 42 8 C56 8, 62 18, 62 38 Z"/>' +
+      // Brim — wide ellipse at bottom
+      '<ellipse cx="42" cy="40" rx="36" ry="6"/>' +
+      // Band detail — slim dark strip across the crown base
+      '<rect x="22" y="34" width="40" height="5" fill="' + stroke + '" stroke="none" opacity="0.85"/>' +
+    '</g>' +
+  '</svg>';
+}
+
+// Color values matching the CSS variables — used to fill SVG hat icons
+const HAT_COLOR_VALUES = {
+  white:  '#e4ddc8',
+  red:    '#d94432',
+  black:  '#2a2722',
+  yellow: '#e8b228',
+  green:  '#5a9d4f',
+  blue:   '#3a6ed8'
+};
+
+function renderHatCards(state) {
+  hatsGrid.innerHTML = HATS.map((h, idx) => {
+    const s = state[h.key] || { kind: 'empty' };
+    let bodyHtml;
+    if (s.kind === 'loading') {
+      bodyHtml = '<div class="skeleton-line w90"></div><div class="skeleton-line w70"></div><div class="skeleton-line w90"></div><div class="skeleton-line w50"></div><div class="skeleton-line w70"></div>';
+    } else if (s.kind === 'done') {
+      bodyHtml = renderMarkdown(s.text);
+    } else if (s.kind === 'error') {
+      bodyHtml = '<div class="body-error">' + escapeHtml(s.error) + '</div>';
+    } else {
+      bodyHtml = '<div class="empty-prompt">Waiting…</div>';
+    }
+    const showSpeaker = s.kind === 'done';
+    const num = String(idx + 1).padStart(2, '0');
+    const color = HAT_COLOR_VALUES[h.color] || '#444';
+    return '<div class="hat-card ' + h.color + '" data-num="' + num + '">' +
+      '<div class="card-band"></div>' +
+      hatIconSvg(color) +
+      '<div class="badge"><span class="swatch"></span>' + h.label + ' · ' + h.character + '</div>' +
+      (showSpeaker
+        ? '<button class="speak-btn" data-hat="' + h.key + '" title="Hear ' + escapeHtml(h.character) + ' speak"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>'
+        : '') +
+      '<div class="character-name"><em>' + h.character.replace(/^The /, '') + '</em></div>' +
+      '<div class="character">' + h.role + '</div>' +
+      '<div class="opener">' + h.tagline + '</div>' +
+      '<div class="body">' + bodyHtml + '</div>' +
+    '</div>';
+  }).join('');
+  hatsGrid.querySelectorAll('.speak-btn').forEach(btn => {
+    btn.addEventListener('click', () => speakHat(btn.dataset.hat));
+  });
+}
+renderHatCards(cardState);
+
+// Populate the masthead brand hats and the hero spectrum with SVG hat icons
+(function populateDecorativeHats() {
+  const brandHats = document.getElementById('brand-hats');
+  if (brandHats) {
+    // 3 distinct hats in the brand mark: red, yellow, blue
+    const brandKeys = ['red', 'yellow', 'blue'];
+    brandHats.innerHTML = brandKeys.map(k =>
+      hatIconSvg(HAT_COLOR_VALUES[k], { w: 18, h: 13, strokeWidth: 1.5 })
+    ).join('');
+  }
+  const spectrum = document.getElementById('hat-spectrum');
+  if (spectrum) {
+    spectrum.innerHTML = HATS.map(h =>
+      '<div class="hat-spectrum-item" title="' + escapeHtml(h.label + ' — ' + h.character) + '">' +
+        hatIconSvg(HAT_COLOR_VALUES[h.color], { w: 38, h: 28, strokeWidth: 2 }) +
+        '<span class="label">' + h.color + '</span>' +
+      '</div>'
+    ).join('');
+  }
+})();
+
+/* =====================================================================
+   API CALLS — one per hat
+   ===================================================================== */
+async function callGemini(hatKey, topic, attachments, apiKey, depthKey) {
+  const inlineTexts = [];
+  attachments.filter(a => a.kind === 'text').forEach(a => {
+    const max = 12000;
+    const t = a.text.length > max ? a.text.slice(0, max) + '\n…[truncated]' : a.text;
+    inlineTexts.push('--- Attached: ' + a.name + ' ---\n' + t + '\n--- end ---');
+  });
+
+  let userText = '';
+  if (topic) userText += 'Topic / framing from the user:\n"""\n' + topic + '\n"""\n\n';
+  if (inlineTexts.length) userText += inlineTexts.join('\n\n') + '\n\n';
+  if (!topic && !inlineTexts.length) userText += '(No content.)\n\n';
+  userText += 'Analyze under the ' + hatKey.toUpperCase() + ' Hat in the voice and discipline of that hat. Honour the depth target stated in your system instructions.';
+
+  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  // Gemini puts system instruction in systemInstruction field; user content in contents
+  const payload = {
+    systemInstruction: { parts: [{ text: buildSystemPrompt(hatKey, depthKey) }] },
+    contents: [{ role: 'user', parts: [{ text: userText }] }],
+    generationConfig: { maxOutputTokens: depth.maxTokens, temperature: 0.7 }
+  };
+
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(apiKey);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) {
+    let errText = '';
+    try { errText = await response.text(); } catch (e) { errText = response.statusText; }
+    let msg = 'Gemini ' + response.status;
+    try { const j = JSON.parse(errText); if (j.error && j.error.message) msg = j.error.message; } catch (e) {}
+    throw new Error(msg);
+  }
+  const data = await response.json();
+  const candidates = data.candidates || [];
+  if (!candidates.length) throw new Error('No candidates in response');
+  const parts = (candidates[0].content && candidates[0].content.parts) || [];
+  const text = parts.map(p => p.text || '').join('').trim();
+  return text || '(empty)';
+}
+
+async function callAnthropic(hatKey, topic, attachments, apiKey, depthKey) {
+  const inlineTexts = [];
+  attachments.filter(a => a.kind === 'text').forEach(a => {
+    const max = 12000;
+    const t = a.text.length > max ? a.text.slice(0, max) + '\n…[truncated]' : a.text;
+    inlineTexts.push('--- Attached: ' + a.name + ' ---\n' + t + '\n--- end ---');
+  });
+
+  let body = '';
+  if (topic) body += 'Topic / framing:\n"""\n' + topic + '\n"""\n\n';
+  if (inlineTexts.length) body += inlineTexts.join('\n\n') + '\n\n';
+  if (!topic && !inlineTexts.length) body += '(No content.)\n\n';
+  body += 'Analyze under the ' + hatKey.toUpperCase() + ' Hat. Honour the depth target stated in your system instructions.';
+
+  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  const payload = {
+    model: 'claude-sonnet-4-5',
+    max_tokens: depth.maxTokens,
+    system: buildSystemPrompt(hatKey, depthKey),
+    messages: [{ role: 'user', content: [{ type: 'text', text: body }] }]
+  };
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) {
+    let errText = ''; try { errText = await response.text(); } catch (e) {}
+    let msg = 'Anthropic ' + response.status;
+    try { const j = JSON.parse(errText); if (j.error && j.error.message) msg = j.error.message; } catch (e) {}
+    throw new Error(msg);
+  }
+  const data = await response.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
+  return text || '(empty)';
+}
+
+async function runAutomaticMode(topic, attachments, depthKey) {
+  for (const k of Object.keys(hatResults)) delete hatResults[k];
+  HATS.forEach(h => { cardState[h.key] = { kind: 'loading' }; });
+  renderHatCards(cardState);
+  playAllBtn.disabled = true;
+  stopSpeaking();
+
+  runBtn.disabled = true;
+  document.getElementById('run-btn-label').textContent = 'The hats are thinking…';
+  stageMeta.textContent = '6 minds · in session · ' + (DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard).label.toLowerCase();
+
+  const callFn = currentProvider === 'gemini'
+    ? (hatKey) => callGemini(hatKey, topic, attachments, keys.gemini, depthKey)
+    : (hatKey) => callAnthropic(hatKey, topic, attachments, keys.anthropic, depthKey);
+
+  let doneCount = 0;
+  let firstError = null;
+
+  await Promise.all(HATS.map(h =>
+    callFn(h.key)
+      .then(md => {
+        hatResults[h.key] = md;
+        cardState[h.key] = { kind: 'done', text: md };
+        renderHatCards(cardState);
+        playAllBtn.disabled = false;
+        doneCount++;
+      })
+      .catch(err => {
+        cardState[h.key] = { kind: 'error', error: err.message };
+        renderHatCards(cardState);
+        if (!firstError) firstError = err;
+      })
+  ));
+
+  runBtn.disabled = false;
+  document.getElementById('run-btn-label').textContent = 'Run again';
+  stageMeta.textContent = doneCount + ' / 6 hats responded' + (firstError ? ' · ' + doneCount + ' OK, others failed' : '');
+}
+
+/* =====================================================================
+   MANUAL MODE
+   ===================================================================== */
+function buildMasterPrompt(topic, attachments, depthKey) {
+  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.deep;
+  const lines = [];
+  lines.push("# Six Thinking Hats — Deep analysis");
+  lines.push("");
+  lines.push("Run a complete De Bono Six Thinking Hats analysis on the topic at the bottom. Produce SIX distinct perspectives, each at depth level: **" + depth.label + "** (~" + depth.targetWords + " words per hat).");
+  lines.push("");
+  lines.push(depth.directive);
+  lines.push("");
+  lines.push("Each hat thinks in ONLY its mode. Do not blend. The discipline is the point.");
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## The six disciplines — read these carefully");
+  lines.push("");
+  // Embed the full long prompts for each hat (using deep version unless overridden)
+  HATS.forEach(h => {
+    lines.push("### " + h.label + " — " + h.character);
+    lines.push("");
+    lines.push(HAT_PROMPT_TEMPLATES[h.key]
+      .replace('${TARGET_WORDS}', depth.targetWords)
+      .replace('${DEPTH_DIRECTIVE}', depth.directive));
+    lines.push("");
+  });
+  lines.push("---");
+  lines.push("");
+  lines.push("## Output format — read carefully, this matters");
+  lines.push("");
+  lines.push("Your response will be parsed automatically. Use the EXACT six headers below, one per line, in this order. DO NOT add `##` or `###` or `**` before them. DO NOT skip the emoji. DO NOT put anything before the first header or after the last hat's content. The headers must appear as their own complete lines:");
+  lines.push("");
+  lines.push("```");
+  lines.push("⚪ WHITE HAT:");
+  lines.push("[your White Hat content here]");
+  lines.push("");
+  lines.push("🔴 RED HAT:");
+  lines.push("[your Red Hat content here]");
+  lines.push("");
+  lines.push("⚫ BLACK HAT:");
+  lines.push("[your Black Hat content here]");
+  lines.push("");
+  lines.push("🟡 YELLOW HAT:");
+  lines.push("[your Yellow Hat content here]");
+  lines.push("");
+  lines.push("🟢 GREEN HAT:");
+  lines.push("[your Green Hat content here]");
+  lines.push("");
+  lines.push("🔵 BLUE HAT:");
+  lines.push("[your Blue Hat content here]");
+  lines.push("```");
+  lines.push("");
+  lines.push("Inside each section you may use markdown (bold, italics, lists, paragraphs) freely — but the six section headers themselves must be EXACTLY as shown: emoji + space + UPPERCASE HAT NAME + colon. Nothing else on that line. Start your reply with `⚪ WHITE HAT:` — no preamble, no \"Here is the analysis…\".");
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+  lines.push("## The topic to analyze");
+  lines.push("");
+  if (topic) { lines.push(topic); lines.push(""); }
+  attachments.forEach(a => {
+    lines.push("--- Attached: " + a.name + " ---");
+    const maxLen = 8000;
+    const t = a.text.length > maxLen ? a.text.slice(0, maxLen) + '\n…[truncated]' : a.text;
+    lines.push(t);
+    lines.push("--- end ---");
+    lines.push("");
+  });
+  if (!topic && attachments.length === 0) lines.push("[NO TOPIC PROVIDED]");
+  return lines.join("\n");
+}
+
+function parseResponse(text) {
+  if (!text || !text.trim()) return null;
+
+  // Multi-strategy parsing — Claude may format headers in many ways.
+  // We try increasingly permissive patterns; the first that finds at least
+  // 4 of 6 hats wins. This handles markdown headings, bold, plain text,
+  // numbered lists, emoji-only or color-word-only headers.
+  const HAT_COLORS = ['white', 'red', 'black', 'yellow', 'green', 'blue'];
+  const HAT_EMOJI = { white: '⚪', red: '🔴', black: '⚫', yellow: '🟡', green: '🟢', blue: '🔵' };
+  const HAT_NAMES = { white: 'archivist', red: 'pulse', black: 'sentinel', yellow: 'builder', green: 'gardener', blue: 'conductor' };
+
+  // Each strategy returns array of {key, index, length} or null
+  const strategies = [
+    // STRATEGY 1: canonical — "⚪ WHITE HAT:" with optional markdown prefix
+    () => {
+      const found = [];
+      HAT_COLORS.forEach(color => {
+        const emoji = HAT_EMOJI[color];
+        // matches:  [optional ## / ### / ** / 1. / - ] [optional emoji] [color] hat [optional :/-/—/character name]
+        const re = new RegExp(
+          '(^|\\n)\\s*(?:#{1,4}\\s*|\\*\\*\\s*|\\d+\\.\\s+|[-•]\\s+)?' +
+          '(?:' + emoji + '\\s*)?' +
+          color + '\\s*hat' +
+          '(?:\\s*[:：—–\\-])?',
+          'i'
+        );
+        const m = text.match(re);
+        if (m) {
+          // index of the actual header (after leading newline)
+          const idx = m.index + (m[0].startsWith('\n') ? 1 : 0);
+          const len = m[0].length - (m[0].startsWith('\n') ? 1 : 0);
+          found.push({ key: color, index: idx, length: len });
+        }
+      });
+      return found.length >= 4 ? found : null;
+    },
+
+    // STRATEGY 2: emoji-only headers — "⚪" on its own (no word "hat")
+    () => {
+      const found = [];
+      HAT_COLORS.forEach(color => {
+        const emoji = HAT_EMOJI[color];
+        // emoji followed by anything but another emoji within a few chars
+        const re = new RegExp('(^|\\n)([#*>\\s]*)?' + emoji + '[^\\n]{0,60}', '');
+        const m = text.match(re);
+        if (m) {
+          // Position right after the emoji
+          const emojiIdx = m[0].indexOf(emoji);
+          const absIdx = m.index + emojiIdx;
+          // Header length = emoji + line tail until newline
+          const tail = text.slice(absIdx).match(/^[^\n]*/);
+          found.push({ key: color, index: absIdx, length: tail ? tail[0].length : emoji.length });
+        }
+      });
+      return found.length >= 4 ? found : null;
+    },
+
+    // STRATEGY 3: character names — "The Archivist:", "Archivist —"
+    () => {
+      const found = [];
+      HAT_COLORS.forEach(color => {
+        const name = HAT_NAMES[color];
+        const re = new RegExp(
+          '(^|\\n)\\s*(?:#{1,4}\\s*|\\*\\*\\s*|\\d+\\.\\s+|[-•]\\s+)?' +
+          '(?:the\\s+)?' + name + '(?:\\s*[:：—–\\-])?',
+          'i'
+        );
+        const m = text.match(re);
+        if (m) {
+          const idx = m.index + (m[0].startsWith('\n') ? 1 : 0);
+          const len = m[0].length - (m[0].startsWith('\n') ? 1 : 0);
+          found.push({ key: color, index: idx, length: len });
+        }
+      });
+      return found.length >= 4 ? found : null;
+    },
+
+    // STRATEGY 4 (lenient): just the color word at line start as a heading marker
+    // Only triggered if neither emoji nor "hat" appears anywhere reliably
+    () => {
+      const found = [];
+      HAT_COLORS.forEach(color => {
+        const re = new RegExp('(^|\\n)\\s*(?:#{1,4}\\s+|\\*\\*\\s*)' + color + '\\b', 'i');
+        const m = text.match(re);
+        if (m) {
+          const idx = m.index + (m[0].startsWith('\n') ? 1 : 0);
+          const len = m[0].length - (m[0].startsWith('\n') ? 1 : 0);
+          found.push({ key: color, index: idx, length: len });
+        }
+      });
+      return found.length >= 4 ? found : null;
+    }
+  ];
+
+  let positions = null;
+  for (const strat of strategies) {
+    const r = strat();
+    if (r) { positions = r; break; }
+  }
+  if (!positions || positions.length === 0) return null;
+
+  // De-duplicate: keep the first match for each hat key
+  const seen = new Set();
+  positions = positions.filter(p => {
+    if (seen.has(p.key)) return false;
+    seen.add(p.key);
+    return true;
+  });
+
+  // Sort by appearance order
+  positions.sort((a, b) => a.index - b.index);
+
+  // Extract content for each hat (from end of its header to start of next)
+  const result = {};
+  for (let i = 0; i < positions.length; i++) {
+    const start = positions[i].index + positions[i].length;
+    const end = i + 1 < positions.length ? positions[i + 1].index : text.length;
+    let content = text.slice(start, end).trim();
+    // Strip leading horizontal rules, bullet leaders, lone markdown headings
+    content = content.replace(/^[#*\-_=]+\s*$/gm, '').trim();
+    // If the very next line is the character name on its own, drop it (already in card UI)
+    content = content.replace(/^\s*(?:#{1,4}\s+)?(?:the\s+)?(archivist|pulse|sentinel|builder|gardener|conductor)\s*[:—–-]?\s*\n/i, '');
+    result[positions[i].key] = content.trim();
+  }
+  return result;
+}
+
+/* =====================================================================
+   CLAUDE DIRECT — copy to clipboard + open Claude in a new tab
+   ===================================================================== */
+async function handleClaudeDirect(topic, attachments, depthKey) {
+  // ONLY generates the prompt and shows it. Does NOT copy. Does NOT open Claude.
+  // The user reviews the prompt, then explicitly clicks "Copy prompt" and/or "Open Claude.ai".
+  const prompt = buildMasterPrompt(topic, attachments, depthKey);
+  promptBody.textContent = prompt;
+  promptStats.textContent = prompt.length.toLocaleString() + ' chars · review, then copy & open Claude when ready';
+  promptOutput.classList.add('visible');
+  promptOutput.style.display = 'block';
+
+  // Show the Open Claude button (only in claude-direct mode)
+  const openClaudeBtn = document.getElementById('open-claude-btn');
+  if (openClaudeBtn) openClaudeBtn.style.display = 'inline-flex';
+
+  // Reset copy button to neutral state
+  copyBtn.textContent = 'Copy prompt';
+  copyBtn.classList.remove('copied');
+
+  setTimeout(() => {
+    promptOutput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+
+  setStatus('ok', '✓ Prompt generated — review below, then copy and open Claude when ready');
+}
+
+// Copy prompt only — no Claude opening
+async function copyPromptToClipboard() {
+  const text = promptBody.textContent;
+  let copied = false;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+    }
+  } catch (e) { /* fallback below */ }
+  if (!copied) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      copied = document.execCommand('copy');
+      document.body.removeChild(ta);
+    } catch (e) {}
+  }
+  if (!copied) {
+    alert('Could not copy automatically. Select the text in the box and use Cmd/Ctrl+C.');
+    return;
+  }
+  copyBtn.textContent = '✓ Copied!';
+  copyBtn.classList.add('copied');
+  setTimeout(() => {
+    copyBtn.textContent = 'Copy prompt';
+    copyBtn.classList.remove('copied');
+  }, 2500);
+}
+
+// Open Claude in a new tab. Optionally also tries the desktop protocol.
+function openClaudeTab() {
+  const preferDesktop = document.getElementById('prefer-desktop') && document.getElementById('prefer-desktop').checked;
+  const text = promptBody.textContent;
+  if (preferDesktop) {
+    const encoded = encodeURIComponent(text.slice(0, 30000));
+    const desktopUrl = 'claude://claude.ai/new?q=' + encoded;
+    window.open(desktopUrl, '_blank');
+    setTimeout(() => { window.open('https://claude.ai/new', '_blank'); }, 700);
+  } else {
+    window.open('https://claude.ai/new', '_blank');
+  }
+  setStatus('ok', '✓ Claude.ai opened — paste with Cmd/Ctrl+V');
+  setTimeout(() => {
+    responseStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 600);
+}
+
+/* =====================================================================
+   RUN
+   ===================================================================== */
+runBtn.addEventListener('click', () => {
+  if (isRecording) stopRecording();
+  const topic = topicInput.value.trim();
+  const ready = attachedFiles.filter(a => a.kind === 'text');
+  const stillProcessing = attachedFiles.some(a => a.kind === 'processing');
+  if (stillProcessing) { alert('A file is still being processed.'); return; }
+  if (!topic && ready.length === 0) { alert('Add a topic or attach a file first.'); return; }
+
+  const depthKey = currentDepth || 'deep';
+
+  if (currentProvider === 'manual') {
+    const prompt = buildMasterPrompt(topic, ready, depthKey);
+    promptBody.textContent = prompt;
+    promptStats.textContent = prompt.length.toLocaleString() + ' chars · paste into any LLM';
+    promptOutput.classList.add('visible');
+    promptOutput.style.display = 'block';
+    promptOutput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+
+  if (currentProvider === 'claude-direct') {
+    handleClaudeDirect(topic, ready, depthKey);
+    return;
+  }
+
+  // Automatic mode (gemini or anthropic)
+  const provKey = keys[currentProvider];
+  const provVerified = verified[currentProvider];
+  if (!provKey) {
+    alert('Add a key for ' + currentProvider + ' first (top panel), or switch to a different mode.');
+    return;
+  }
+  if (!provVerified) {
+    alert('Click "Save & test" to verify the key first.');
+    return;
+  }
+  runAutomaticMode(topic, ready, depthKey);
+});
+
+copyBtn.addEventListener('click', copyPromptToClipboard);
+const openClaudeBtnEl = document.getElementById('open-claude-btn');
+if (openClaudeBtnEl) {
+  openClaudeBtnEl.addEventListener('click', openClaudeTab);
+}
+
+parseBtn.addEventListener('click', () => {
+  const text = responseInput.value.trim();
+  if (!text) { alert('Paste the response first.'); return; }
+  const parsed = parseResponse(text);
+  if (!parsed || Object.keys(parsed).length === 0) {
+    alert('Could not find the six hat sections. Make sure the headers are present: ⚪ WHITE HAT:, 🔴 RED HAT:, etc.');
+    return;
+  }
+  for (const k of Object.keys(hatResults)) delete hatResults[k];
+  Object.assign(hatResults, parsed);
+  HATS.forEach(h => {
+    cardState[h.key] = parsed[h.key] ? { kind: 'done', text: parsed[h.key] } : { kind: 'empty' };
+  });
+  renderHatCards(cardState);
+  const found = Object.keys(parsed).length;
+  stageMeta.textContent = found + ' / 6 hats parsed';
+  playAllBtn.disabled = found === 0;
+});
+
+document.querySelectorAll('.example-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    topicInput.value = EXAMPLES[pill.dataset.example] || '';
+    topicInput.focus();
+  });
+});
+
+topicInput.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') runBtn.click();
+});
+
+window.addEventListener('beforeunload', () => {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+});
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+loadKeys();
+updateStatusForProvider();
+// Default mode is claude-direct, so show the paste area
+responseStep.style.display = 'block';
+if (keys.gemini) testGeminiKey(keys.gemini).then(ok => { verified.gemini = ok; updateStatusForProvider(); });
+// On init, if an ElevenLabs key is stored, fetch voices and assign them to hats silently.
+// If discovery fails (e.g. missing voices_read scope) but a manual map exists, surface the mapper.
+if (keys.elevenlabs) {
+  testElevenLabsKey(keys.elevenlabs).then(result => {
+    if (result.ok) {
+      verified.elevenlabs = true;
+    } else if (result.status === 401 && /voices_read/i.test(result.error || '')) {
+      // Key works but lacks voices_read — manual mapping is the path
+      verified.elevenlabs = true;
+      const mm = document.getElementById('manual-voice-map');
+      if (mm) {
+        renderManualVoiceMap();
+        mm.style.display = 'block';
+      }
+    } else {
+      verified.elevenlabs = false;
+    }
+  });
+}
+</script>
+</body>
+</html>
