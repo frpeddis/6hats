@@ -986,10 +986,16 @@
   /* Depth selector — prominent segmented control */
   .depth-selector {
     margin: 28px 0 18px;
-    padding: 18px 20px;
+    padding: 18px 20px 16px;
     background: var(--surface-2);
     border: 1px solid var(--rule);
     border-radius: var(--radius);
+  }
+  .depth-selector-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
   }
   .depth-selector-label {
     font-family: var(--mono);
@@ -998,74 +1004,81 @@
     letter-spacing: 0.18em;
     color: var(--ink-3);
     font-weight: 600;
-    margin-bottom: 12px;
   }
-  .depth-options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  @media (max-width: 720px) {
-    .depth-options { grid-template-columns: repeat(2, 1fr); }
-  }
-  .depth-option {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 14px 14px 12px;
-    background: var(--surface);
-    border: 1.5px solid var(--rule);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.15s;
+  .depth-selector-current {
     font-family: var(--sans);
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-  }
-  .depth-option:hover:not(.active) {
-    border-color: var(--ink-3);
-    background: var(--surface);
-    transform: translateY(-1px);
-  }
-  .depth-option.active {
-    background: var(--ink);
-    border-color: var(--ink);
-    box-shadow: 0 4px 12px -2px rgba(20, 19, 15, 0.18);
-  }
-  .depth-option.active .depth-name { color: var(--surface); }
-  .depth-option.active .depth-meta { color: rgba(255,255,255,0.65); }
-  .depth-option.active .depth-bar { background: rgba(255,255,255,0.18); }
-  .depth-option.active .depth-bar-fill { background: var(--red-hat); }
-  .depth-name {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--ink);
-    letter-spacing: -0.01em;
   }
-  .depth-meta {
+  .depth-current-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-left: 2px;
+  }
+  .depth-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 100px;
+    background: linear-gradient(to right, var(--rule-2) 0%, var(--ink-3) 50%, var(--ink) 100%);
+    outline: none;
+    margin: 4px 0 8px;
+    cursor: pointer;
+  }
+  .depth-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 0 1px 4px rgba(20, 19, 15, 0.25);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .depth-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+  .depth-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 0 1px 4px rgba(20, 19, 15, 0.25);
+    cursor: pointer;
+  }
+  .depth-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 100px;
+    background: linear-gradient(to right, var(--rule-2) 0%, var(--ink-3) 50%, var(--ink) 100%);
+  }
+  .depth-slider-ticks {
+    display: flex;
+    justify-content: space-between;
     font-family: var(--mono);
     font-size: 10px;
     color: var(--ink-3);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 500;
+    margin-bottom: 12px;
+    padding: 0 1px;
   }
-  .depth-bar {
-    width: 100%;
-    height: 4px;
-    background: var(--rule);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-top: 4px;
+  .depth-slider-ticks span {
+    transition: color 0.15s, font-weight 0.15s;
   }
-  .depth-bar-fill {
-    display: block;
-    height: 100%;
-    background: var(--ink-3);
-    border-radius: 100px;
-    transition: width 0.2s;
+  .depth-slider-ticks span.active {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .depth-selector-note {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-2);
   }
 
   /* Voice settings — within setup panel */
@@ -1744,31 +1757,22 @@
       <div class="attached-files" id="attached-files"></div>
     </div>
 
-    <!-- Depth selector — prominent segmented control -->
-    <div class="depth-selector" role="radiogroup" aria-label="Analysis depth">
-      <div class="depth-selector-label">Depth of analysis</div>
-      <div class="depth-options">
-        <button type="button" class="depth-option" data-depth="concise" role="radio" aria-checked="false">
-          <span class="depth-name">Concise</span>
-          <span class="depth-meta">~180 words · per hat</span>
-          <span class="depth-bar"><span class="depth-bar-fill" style="width: 18%"></span></span>
-        </button>
-        <button type="button" class="depth-option" data-depth="standard" role="radio" aria-checked="false">
-          <span class="depth-name">Standard</span>
-          <span class="depth-meta">~350 words · per hat</span>
-          <span class="depth-bar"><span class="depth-bar-fill" style="width: 38%"></span></span>
-        </button>
-        <button type="button" class="depth-option active" data-depth="deep" role="radio" aria-checked="true">
-          <span class="depth-name">Deep</span>
-          <span class="depth-meta">~600 words · per hat</span>
-          <span class="depth-bar"><span class="depth-bar-fill" style="width: 65%"></span></span>
-        </button>
-        <button type="button" class="depth-option" data-depth="exhaustive" role="radio" aria-checked="false">
-          <span class="depth-name">Exhaustive</span>
-          <span class="depth-meta">~1000 words · per hat</span>
-          <span class="depth-bar"><span class="depth-bar-fill" style="width: 100%"></span></span>
-        </button>
+    <!-- Depth selector — slider with 6 discrete stops -->
+    <div class="depth-selector">
+      <div class="depth-selector-head">
+        <span class="depth-selector-label">Depth of analysis</span>
+        <span class="depth-selector-current" id="depth-current-label">600 words <span class="depth-current-sub">per hat</span></span>
       </div>
+      <input type="range" id="depth-slider" class="depth-slider" min="0" max="5" step="1" value="4" aria-label="Depth of analysis" />
+      <div class="depth-slider-ticks">
+        <span data-depth="50">50</span>
+        <span data-depth="100">100</span>
+        <span data-depth="200">200</span>
+        <span data-depth="400">400</span>
+        <span data-depth="600">600</span>
+        <span data-depth="800">800</span>
+      </div>
+      <div class="depth-selector-note" id="depth-current-note">Go deep. Concrete texture, named conditions, contrasting cases — the second and third layer of the hat's discipline.</div>
     </div>
 
     <div class="button-row">
@@ -1881,13 +1885,21 @@ const HATS = [
 /* Depth presets — each adjusts target word count, structural depth, and max tokens.
    The system prompts below are parameterized: ${TARGET_WORDS} and ${DEPTH_DIRECTIVE}
    get substituted at call time based on the user's depth selection. */
-const DEPTH_PRESETS = {
-  brief:      { label: 'Brief',      targetWords: '50-80',    maxTokens: 500,  directive: 'Be radically brief. Two to three sentences, no more. One sharp observation in the hat\'s voice. No lists, no sub-sections, no preamble. Punchy. Think: tweet length, not memo length.' },
-  concise:    { label: 'Concise',    targetWords: '150-200',  maxTokens: 1000, directive: 'Be tight and punchy. One pass through your discipline, no more.' },
-  standard:   { label: 'Standard',   targetWords: '300-400',  maxTokens: 1800, directive: 'Take real space to develop the perspective. Multiple distinct points, each developed in 2-3 sentences.' },
-  deep:       { label: 'Deep',       targetWords: '500-700',  maxTokens: 2800, directive: 'Go deep. Develop each point with concrete texture: specific scenarios, named conditions, contrasting cases, time horizons. Push past the obvious — the second and third layer of the hat\'s discipline is where the value lives.' },
-  exhaustive: { label: 'Exhaustive', targetWords: '800-1100', maxTokens: 4000, directive: 'Be thorough. This is the deep-dive version. Develop the perspective like a senior practitioner writing a section of a strategy memo. Multiple developed angles, concrete worked examples, named scenarios with their assumptions, explicit contrasts and edge cases. Avoid filler — every paragraph must do work. Use structured sub-sections if it helps the reader.' }
-};
+/* Six discrete depth stops, indexed 0-5 by the slider. Word counts are
+   per-hat targets; maxTokens is a generous ceiling (~1.8 tokens/word plus
+   headroom) so the model isn't cut off mid-sentence. */
+const DEPTH_PRESETS = [
+  { key: '50',  words: 50,  label: '50 words',  targetWords: '40-60',    maxTokens: 350,  directive: 'Radically brief. ONE sentence, two at most. A single sharp observation in the hat\'s voice — no lists, no sub-points, no preamble, no closing summary. Think: a sharp tweet, not a memo.' },
+  { key: '100', words: 100, label: '100 words', targetWords: '80-120',   maxTokens: 550,  directive: 'Very brief. Two to three tight sentences. One clear point in the hat\'s voice, maybe a second if it earns its place. No sub-headings, no list structure.' },
+  { key: '200', words: 200, label: '200 words', targetWords: '150-220',  maxTokens: 1000, directive: 'Be tight and punchy. One clean pass through your discipline — pick the two or three points that matter most and develop each in a couple of sentences. No padding.' },
+  { key: '400', words: 400, label: '400 words', targetWords: '350-450',  maxTokens: 1800, directive: 'Take real space to develop the perspective. Multiple distinct points, each developed in 2-3 sentences, with at least one concrete example or scenario.' },
+  { key: '600', words: 600, label: '600 words', targetWords: '500-700',  maxTokens: 2800, directive: 'Go deep. Develop each point with concrete texture: specific scenarios, named conditions, contrasting cases, time horizons. Push past the obvious — the second and third layer of the hat\'s discipline is where the value lives.' },
+  { key: '800', words: 800, label: '800 words', targetWords: '700-900',  maxTokens: 3600, directive: 'Be thorough. This is the deep-dive version. Develop the perspective like a senior practitioner writing a section of a strategy memo. Multiple developed angles, concrete worked examples, named scenarios with their assumptions, explicit contrasts and edge cases. Avoid filler — every paragraph must do work. Use structured sub-sections if it helps the reader.' }
+];
+/* Lookup by key string (e.g. '50', '400') — used everywhere depth is read
+   so callers don't need to know about the underlying array index. */
+const DEPTH_BY_KEY = {};
+DEPTH_PRESETS.forEach(d => { DEPTH_BY_KEY[d.key] = d; });
 
 const HAT_PROMPT_TEMPLATES = {
   white: `You are THE ARCHIVIST, wearing the White Hat in a De Bono Six Thinking Hats exercise.
@@ -2063,7 +2075,7 @@ OUTPUT FORMAT (markdown):
 };
 
 function buildSystemPrompt(hatKey, depthKey) {
-  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  const depth = DEPTH_BY_KEY[depthKey] || DEPTH_BY_KEY['600'];
   const base = HAT_PROMPT_TEMPLATES[hatKey]
     .replace('${TARGET_WORDS}', depth.targetWords)
     .replace('${DEPTH_DIRECTIVE}', depth.directive);
@@ -2087,7 +2099,7 @@ const OUTPUT_LANG_STORAGE = 'sixhats_output_lang';
 const VOICE_ENGINE_STORAGE = 'sixhats_voice_engine';
 const MANUAL_VOICE_MAP_STORAGE = 'sixhats_manual_voice_map';
 let currentProvider = 'claude-direct';  // 'claude-direct' | 'gemini' | 'anthropic' | 'manual'
-let currentDepth = 'deep';              // 'concise' | 'standard' | 'deep' | 'exhaustive'
+let currentDepth = '600';               // one of: '50' | '100' | '200' | '400' | '600' | '800' (words per hat)
 const keys = { gemini: '', anthropic: '', elevenlabs: '' };
 const verified = { gemini: false, anthropic: false, elevenlabs: false };
 let voiceEngine = 'browser';   // 'browser' | 'elevenlabs'
@@ -2781,17 +2793,36 @@ document.querySelectorAll('.provider-tab').forEach(tab => {
   });
 });
 
-/* Depth selector — segmented control */
-document.querySelectorAll('.depth-option').forEach(opt => {
-  opt.addEventListener('click', () => {
-    currentDepth = opt.dataset.depth;
-    document.querySelectorAll('.depth-option').forEach(o => {
-      const active = (o === opt);
-      o.classList.toggle('active', active);
-      o.setAttribute('aria-checked', active ? 'true' : 'false');
-    });
+/* Depth slider — 6 discrete word-count stops */
+const depthSlider = document.getElementById('depth-slider');
+const depthCurrentLabel = document.getElementById('depth-current-label');
+const depthCurrentNote = document.getElementById('depth-current-note');
+const DEPTH_STORAGE = 'sixhats_depth';
+
+function updateDepthUI() {
+  const d = DEPTH_PRESETS[parseInt(depthSlider.value, 10)] || DEPTH_PRESETS[4];
+  currentDepth = d.key;
+  depthCurrentLabel.innerHTML = d.words + ' words <span class="depth-current-sub">per hat</span>';
+  depthCurrentNote.textContent = d.directive;
+  document.querySelectorAll('.depth-slider-ticks span').forEach(tick => {
+    tick.classList.toggle('active', tick.dataset.depth === d.key);
   });
-});
+}
+if (depthSlider) {
+  // Restore any previously saved depth before first render
+  try {
+    const storedDepth = localStorage.getItem(DEPTH_STORAGE);
+    if (storedDepth !== null) {
+      const idx = DEPTH_PRESETS.findIndex(d => d.key === storedDepth);
+      if (idx >= 0) depthSlider.value = String(idx);
+    }
+  } catch (e) {}
+  updateDepthUI();
+  depthSlider.addEventListener('input', () => {
+    updateDepthUI();
+    try { localStorage.setItem(DEPTH_STORAGE, currentDepth); } catch (e) {}
+  });
+}
 
 /* =====================================================================
    FILE HANDLING (text only — keeps payload small)
@@ -3599,7 +3630,7 @@ async function callGemini(hatKey, topic, attachments, apiKey, depthKey) {
   if (!topic && !inlineTexts.length) userText += '(No content.)\n\n';
   userText += 'Analyze under the ' + hatKey.toUpperCase() + ' Hat in the voice and discipline of that hat. Honour the depth target stated in your system instructions.';
 
-  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  const depth = DEPTH_BY_KEY[depthKey] || DEPTH_BY_KEY['600'];
   // Gemini puts system instruction in systemInstruction field; user content in contents
   const payload = {
     systemInstruction: { parts: [{ text: buildSystemPrompt(hatKey, depthKey) }] },
@@ -3642,7 +3673,7 @@ async function callAnthropic(hatKey, topic, attachments, apiKey, depthKey) {
   if (!topic && !inlineTexts.length) body += '(No content.)\n\n';
   body += 'Analyze under the ' + hatKey.toUpperCase() + ' Hat. Honour the depth target stated in your system instructions.';
 
-  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  const depth = DEPTH_BY_KEY[depthKey] || DEPTH_BY_KEY['600'];
   const selectedModel = (ANTHROPIC_MODELS[anthropicModelIndex] || ANTHROPIC_MODELS[1]).id;
   const payload = {
     model: selectedModel,
@@ -3680,7 +3711,7 @@ async function runAutomaticMode(topic, attachments, depthKey) {
 
   runBtn.disabled = true;
   document.getElementById('run-btn-label').textContent = 'The hats are thinking…';
-  stageMeta.textContent = '6 minds · in session · ' + (DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard).label.toLowerCase();
+  stageMeta.textContent = '6 minds · in session · ' + (DEPTH_BY_KEY[depthKey] || DEPTH_BY_KEY['600']).label.toLowerCase();
 
   const callFn = currentProvider === 'gemini'
     ? (hatKey) => callGemini(hatKey, topic, attachments, keys.gemini, depthKey)
@@ -3714,7 +3745,7 @@ async function runAutomaticMode(topic, attachments, depthKey) {
    MANUAL MODE
    ===================================================================== */
 function buildMasterPrompt(topic, attachments, depthKey) {
-  const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.deep;
+  const depth = DEPTH_BY_KEY[depthKey] || DEPTH_BY_KEY['600'];
   const lines = [];
   lines.push("# Six Thinking Hats — Deep analysis");
   lines.push("");
@@ -4007,7 +4038,7 @@ runBtn.addEventListener('click', () => {
   if (stillProcessing) { alert('A file is still being processed.'); return; }
   if (!topic && ready.length === 0) { alert('Add a topic or attach a file first.'); return; }
 
-  const depthKey = currentDepth || 'deep';
+  const depthKey = currentDepth || '600';
 
   if (currentProvider === 'manual') {
     const prompt = buildMasterPrompt(topic, ready, depthKey);
