@@ -409,6 +409,137 @@
     border: 1px solid #e0cb88;
   }
 
+  .key-remember-row { margin: -2px 0 14px; }
+  .key-remember-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .key-remember-label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* ===== MODEL PICKER (Anthropic) ===== */
+  .model-picker {
+    margin-top: 18px;
+    padding: 18px 18px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+  }
+  .model-picker-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .model-picker-head label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .model-picker-current {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .model-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 100px;
+    background: linear-gradient(to right, var(--green-hat) 0%, var(--yellow-hat) 50%, var(--red-hat) 100%);
+    outline: none;
+    margin: 6px 0 8px;
+    cursor: pointer;
+  }
+  .model-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 0 1px 4px rgba(20, 19, 15, 0.25);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .model-slider::-webkit-slider-thumb:hover { transform: scale(1.1); }
+  .model-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 3px solid var(--ink);
+    box-shadow: 0 1px 4px rgba(20, 19, 15, 0.25);
+    cursor: pointer;
+  }
+  .model-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 100px;
+    background: linear-gradient(to right, var(--green-hat) 0%, var(--yellow-hat) 50%, var(--red-hat) 100%);
+  }
+  .model-slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+  }
+  .model-picker-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  @media (max-width: 560px) {
+    .model-picker-meta { grid-template-columns: 1fr; }
+  }
+  .model-meta-item {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .model-meta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+  }
+  .model-meta-value {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .model-picker-note {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+
   /* ===== STEP CARDS ===== */
   .step-card {
     background: var(--surface);
@@ -1291,6 +1422,46 @@
             <button class="small-btn secondary" id="anthropic-clear">Clear</button>
           </div>
         </div>
+        <div class="key-remember-row">
+          <label class="key-remember-label">
+            <input type="checkbox" id="anthropic-remember" checked />
+            Remember this key on this device (localStorage)
+          </label>
+        </div>
+
+        <div class="model-picker">
+          <div class="model-picker-head">
+            <label for="anthropic-model-slider">Claude model</label>
+            <span class="model-picker-current" id="anthropic-model-name">Sonnet 4.6</span>
+          </div>
+          <input type="range" id="anthropic-model-slider" class="model-slider" min="0" max="2" step="1" value="1" />
+          <div class="model-slider-ticks">
+            <span>Haiku 4.5</span>
+            <span>Sonnet 4.6</span>
+            <span>Opus 4.7</span>
+          </div>
+          <div class="model-picker-meta">
+            <div class="model-meta-item">
+              <span class="model-meta-label">Speed / cost</span>
+              <span class="model-meta-value" id="anthropic-model-speed">Balanced</span>
+            </div>
+            <div class="model-meta-item">
+              <span class="model-meta-label">Price per 1M tokens</span>
+              <span class="model-meta-value" id="anthropic-model-price">$3 in · $15 out</span>
+            </div>
+            <div class="model-meta-item">
+              <span class="model-meta-label">Est. cost — 6-hat run, "Deep"</span>
+              <span class="model-meta-value" id="anthropic-model-estimate">≈ $0.11–$0.23</span>
+            </div>
+          </div>
+          <div class="model-picker-note" id="anthropic-model-desc">
+            The best balance of intelligence, speed and cost — the recommended default for this app.
+          </div>
+        </div>
+
+        <div class="privacy-note">
+          <strong>Where your key lives:</strong> only in this browser's <code>localStorage</code>, on this device, if "Remember this key" is checked. It never leaves your machine except as the key parameter to <code>api.anthropic.com</code>. Uncheck the box to use the key for this session only. Clear it any time with the Clear button. If you share this browser, clear after use.
+        </div>
       </div>
 
       <!-- MANUAL -->
@@ -1716,6 +1887,7 @@ const EXAMPLES = {
 const KEY_STORAGE_GEMINI = 'sixhats_gemini_key';
 const KEY_STORAGE_ANTHROPIC = 'sixhats_anthropic_key';
 const KEY_STORAGE_ELEVENLABS = 'sixhats_elevenlabs_key';
+const ANTHROPIC_MODEL_STORAGE = 'sixhats_anthropic_model';
 const VOICE_ENGINE_STORAGE = 'sixhats_voice_engine';
 const MANUAL_VOICE_MAP_STORAGE = 'sixhats_manual_voice_map';
 let currentProvider = 'claude-direct';  // 'claude-direct' | 'gemini' | 'anthropic' | 'manual'
@@ -1723,6 +1895,36 @@ let currentDepth = 'deep';              // 'concise' | 'standard' | 'deep' | 'ex
 const keys = { gemini: '', anthropic: '', elevenlabs: '' };
 const verified = { gemini: false, anthropic: false, elevenlabs: false };
 let voiceEngine = 'browser';   // 'browser' | 'elevenlabs'
+
+/* Anthropic model tiers, indexed 0-2 by the slider. Prices are USD per
+   million tokens, current as of the Anthropic pricing page. */
+const ANTHROPIC_MODELS = [
+  {
+    id: 'claude-haiku-4-5-20251001',
+    name: 'Haiku 4.5',
+    speed: 'Fastest · cheapest',
+    inPrice: 1, outPrice: 5,
+    estLow: '0.04', estHigh: '0.08',
+    desc: 'Fastest and cheapest. Good for quick, lighter takes from the six hats — quality is lower than Sonnet or Opus on nuanced reasoning.'
+  },
+  {
+    id: 'claude-sonnet-4-6',
+    name: 'Sonnet 4.6',
+    speed: 'Balanced',
+    inPrice: 3, outPrice: 15,
+    estLow: '0.11', estHigh: '0.23',
+    desc: 'The best balance of intelligence, speed and cost — the recommended default for this app.'
+  },
+  {
+    id: 'claude-opus-4-7',
+    name: 'Opus 4.7',
+    speed: 'Most capable · slowest',
+    inPrice: 5, outPrice: 25,
+    estLow: '0.18', estHigh: '0.38',
+    desc: 'Anthropic\'s most capable model. Best for the richest, most nuanced six-hat analysis — costs more and runs a little slower than Sonnet.'
+  }
+];
+let anthropicModelIndex = 1; // default: Sonnet 4.6
 
 const attachedFiles = [];
 const hatResults = {};
@@ -1781,7 +1983,8 @@ function updateStatusForProvider() {
     return;
   }
   if (currentProvider === 'anthropic') {
-    if (verified.anthropic) setStatus('ok', '✓ Anthropic key works — one-button mode active');
+    const modelName = (ANTHROPIC_MODELS[anthropicModelIndex] || ANTHROPIC_MODELS[1]).name;
+    if (verified.anthropic) setStatus('ok', '✓ Anthropic key works — using Claude ' + modelName);
     else if (keys.anthropic) setStatus('', 'Anthropic key saved — click "Save & test" to verify');
     else setStatus('', 'Paste an Anthropic API key, or switch to Gemini (free)');
   }
@@ -1801,6 +2004,11 @@ function loadKeys() {
     keys.anthropic = localStorage.getItem(KEY_STORAGE_ANTHROPIC) || '';
     keys.elevenlabs = localStorage.getItem(KEY_STORAGE_ELEVENLABS) || '';
     voiceEngine = localStorage.getItem(VOICE_ENGINE_STORAGE) || 'browser';
+    const storedModel = localStorage.getItem(ANTHROPIC_MODEL_STORAGE);
+    if (storedModel !== null && !isNaN(parseInt(storedModel, 10))) {
+      const idx = parseInt(storedModel, 10);
+      if (idx >= 0 && idx < ANTHROPIC_MODELS.length) anthropicModelIndex = idx;
+    }
     // Load manual voice map (hatKey → voice_id)
     const rawMap = localStorage.getItem(MANUAL_VOICE_MAP_STORAGE);
     if (rawMap) {
@@ -1813,7 +2021,14 @@ function loadKeys() {
     }
   } catch (e) {}
   if (keys.gemini) document.getElementById('gemini-key').value = keys.gemini;
-  if (keys.anthropic) document.getElementById('anthropic-key').value = keys.anthropic;
+  if (keys.anthropic) {
+    document.getElementById('anthropic-key').value = keys.anthropic;
+  }
+  const rememberBox = document.getElementById('anthropic-remember');
+  if (rememberBox) rememberBox.checked = !!keys.anthropic || rememberBox.checked;
+  const modelSlider = document.getElementById('anthropic-model-slider');
+  if (modelSlider) modelSlider.value = String(anthropicModelIndex);
+  updateModelPickerUI();
   const elKeyInput = document.getElementById('elevenlabs-key');
   if (elKeyInput && keys.elevenlabs) elKeyInput.value = keys.elevenlabs;
   // Sync voice-engine radio + show/hide key block
@@ -1821,6 +2036,23 @@ function loadKeys() {
   if (radio) radio.checked = true;
   const keyBlock = document.getElementById('elevenlabs-key-block');
   if (keyBlock) keyBlock.style.display = (voiceEngine === 'elevenlabs') ? 'block' : 'none';
+}
+
+/* Reflect the current anthropicModelIndex into the slider's labels, price,
+   speed, and description fields. */
+function updateModelPickerUI() {
+  const m = ANTHROPIC_MODELS[anthropicModelIndex];
+  if (!m) return;
+  const nameEl = document.getElementById('anthropic-model-name');
+  const speedEl = document.getElementById('anthropic-model-speed');
+  const priceEl = document.getElementById('anthropic-model-price');
+  const estEl = document.getElementById('anthropic-model-estimate');
+  const descEl = document.getElementById('anthropic-model-desc');
+  if (nameEl) nameEl.textContent = m.name;
+  if (speedEl) speedEl.textContent = m.speed;
+  if (priceEl) priceEl.textContent = '$' + m.inPrice + ' in · $' + m.outPrice + ' out';
+  if (estEl) estEl.textContent = '≈ $' + m.estLow + '–$' + m.estHigh;
+  if (descEl) descEl.textContent = m.desc;
 }
 
 /* Render the manual voice-mapping grid — one input per hat */
@@ -1891,7 +2123,7 @@ async function testAnthropicKey(key) {
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-haiku-latest',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 20,
         messages: [{ role: 'user', content: 'Reply with: READY' }]
       })
@@ -1925,6 +2157,7 @@ document.getElementById('gemini-save').addEventListener('click', async () => {
   } else {
     verified.gemini = false;
   }
+  updateStatusForProvider();
 });
 document.getElementById('gemini-clear').addEventListener('click', () => {
   try { localStorage.removeItem(KEY_STORAGE_GEMINI); } catch (e) {}
@@ -1943,10 +2176,16 @@ document.getElementById('anthropic-save').addEventListener('click', async () => 
   if (ok) {
     keys.anthropic = k;
     verified.anthropic = true;
-    try { localStorage.setItem(KEY_STORAGE_ANTHROPIC, k); } catch (e) {}
+    const remember = document.getElementById('anthropic-remember');
+    if (!remember || remember.checked) {
+      try { localStorage.setItem(KEY_STORAGE_ANTHROPIC, k); } catch (e) {}
+    } else {
+      try { localStorage.removeItem(KEY_STORAGE_ANTHROPIC); } catch (e) {}
+    }
   } else {
     verified.anthropic = false;
   }
+  updateStatusForProvider();
 });
 document.getElementById('anthropic-clear').addEventListener('click', () => {
   try { localStorage.removeItem(KEY_STORAGE_ANTHROPIC); } catch (e) {}
@@ -1954,6 +2193,16 @@ document.getElementById('anthropic-clear').addEventListener('click', () => {
   document.getElementById('anthropic-key').value = '';
   updateStatusForProvider();
 });
+
+const anthropicModelSlider = document.getElementById('anthropic-model-slider');
+if (anthropicModelSlider) {
+  anthropicModelSlider.addEventListener('input', () => {
+    anthropicModelIndex = parseInt(anthropicModelSlider.value, 10) || 0;
+    updateModelPickerUI();
+    try { localStorage.setItem(ANTHROPIC_MODEL_STORAGE, String(anthropicModelIndex)); } catch (e) {}
+    if (currentProvider === 'anthropic') updateStatusForProvider();
+  });
+}
 
 /* ===== ElevenLabs key handling ===== */
 /* Cache of the user's available voices (populated after key is verified).
@@ -3152,8 +3401,9 @@ async function callAnthropic(hatKey, topic, attachments, apiKey, depthKey) {
   body += 'Analyze under the ' + hatKey.toUpperCase() + ' Hat. Honour the depth target stated in your system instructions.';
 
   const depth = DEPTH_PRESETS[depthKey] || DEPTH_PRESETS.standard;
+  const selectedModel = (ANTHROPIC_MODELS[anthropicModelIndex] || ANTHROPIC_MODELS[1]).id;
   const payload = {
-    model: 'claude-sonnet-4-5',
+    model: selectedModel,
     max_tokens: depth.maxTokens,
     system: buildSystemPrompt(hatKey, depthKey),
     messages: [{ role: 'user', content: [{ type: 'text', text: body }] }]
@@ -3586,6 +3836,7 @@ updateStatusForProvider();
 // Default mode is claude-direct, so show the paste area
 responseStep.style.display = 'block';
 if (keys.gemini) testGeminiKey(keys.gemini).then(ok => { verified.gemini = ok; updateStatusForProvider(); });
+if (keys.anthropic) testAnthropicKey(keys.anthropic).then(ok => { verified.anthropic = ok; updateStatusForProvider(); });
 // On init, if an ElevenLabs key is stored, fetch voices and assign them to hats silently.
 // If discovery fails (e.g. missing voices_read scope) but a manual map exists, surface the mapper.
 if (keys.elevenlabs) {
